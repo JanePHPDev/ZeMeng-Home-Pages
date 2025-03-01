@@ -38,11 +38,10 @@
         }
 
         .container {
-            display: grid;
-            grid-template-columns: 60% 40%;
-            min-height: 100vh;
-            padding: 2rem;
-            gap: 2rem;
+            display: block;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 4rem;
             position: relative;
         }
 
@@ -61,25 +60,25 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .content {
-            max-width: 800px;
-            padding-right: 4rem;
-        }
-
         .avatar-container {
-            position: relative;
-            height: fit-content;
-            margin-top: 4rem;
+            text-align: center;
+            margin: 4rem auto 2rem;
         }
 
         .avatar {
-            width: 320px;
-            height: 320px;
+            width: 380px;
+            height: 380px;
             border-radius: 50%;
             border: 4px solid var(--accent);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             transition: var(--transition);
             background: url('https://jsdelivrcn.netlify.app/gh/YShenZe/Blog-Static-Resource@main/images/1f94e9c693374150b1f8dfd8de0fcce1.jpeg') center/cover;
+            margin: 0 auto;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .section {
@@ -87,26 +86,30 @@
             padding: 2rem;
             border-radius: 1.5rem;
             margin-bottom: 2rem;
-            transform: translateX(-50px);
+            transform: translateY(30px);
             opacity: 0;
             transition: var(--transition);
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.1);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .section.visible {
-          transform: translateX(0);
+          transform: translateY(0);
           opacity: 1;
         }
 
         h1 {
-          font-size: 3rem;
+          font-size: 3.5rem;
           margin-bottom: 1rem;
           background: linear-gradient(to right, var(--accent), #60a5fa);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           letter-spacing: -0.05em;
+          text-align: center;
         }
         
         .motto {
@@ -114,12 +117,12 @@
           opacity: 0.9;
           margin-bottom: 3rem;
           position: relative;
-          padding-left: 1.5rem;
+          text-align: center;
         }
 
         .links-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: 1rem;
           margin: 2rem 0;
         }
@@ -153,11 +156,12 @@
           gap: 0.8rem;
           flex-wrap: wrap;
           margin-top: 1rem;
+          justify-content: center;
         }
         
         .tech-item {
           background: rgba(59, 130, 246, 0.15);
-          padding: 0.4rem 1rem;
+          padding: 0.6rem 1.2rem;
           border-radius: 999px;
           font-size: 0.9rem;
           border: 1px solid rgba(59, 130, 246, 0.3);
@@ -212,33 +216,31 @@
 
         @media (max-width: 768px) {
           .container {
-            grid-template-columns: 1fr;
             padding: 1rem;
           }
           
-          .avatar-container {
-            order: -1;
-            text-align: center;
-            margin-top: 0;
-          }
-          
           .avatar {
-            width: 200px;
-            height: 200px;
+            width: 240px;
+            height: 240px;
           }
           
-          .content {
-            padding-right: 0;
+          h1 {
+            font-size: 2.5rem;
           }
-
+          
           .section {
-            margin-bottom: 1.5rem;
             padding: 1.5rem;
+            margin-bottom: 1.5rem;
+          }
+          
+          .links-grid {
+            grid-template-columns: 1fr;
           }
         }
-        
+
         a {
-  text-decoration: none;
+          text-decoration: none;
+          color: var(--accent);
         }
     </style>
 </head>
@@ -246,9 +248,13 @@
     <button class="theme-toggle">🌙</button>
     
     <div class="container">
+        <div class="avatar-container">
+            <div class="avatar"></div>
+        </div>
+        
         <div class="content">
             <section class="section">
-                <h1>ZeMeng</h1>
+                <h1>ZeMeng Developer</h1>
                 <p class="motto">"Devote to technology, enrich life with code."</p>
                 
                 <div class="links-grid">
@@ -340,10 +346,6 @@
                 </div>
             </section>
         </div>
-
-        <div class="avatar-container">
-            <div class="avatar"></div>
-        </div>
     </div>
 
     <script>
@@ -371,4 +373,4 @@
         document.querySelectorAll('.section').forEach(section => observer.observe(section));
     </script>
 </body>
-                                                     </html>
+</html>
