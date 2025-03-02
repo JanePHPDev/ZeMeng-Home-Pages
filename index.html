@@ -96,7 +96,7 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         .section.visible {
           transform: translateY(0);
           opacity: 1;
@@ -111,7 +111,7 @@
           letter-spacing: -0.05em;
           text-align: center;
         }
-        
+
         .motto {
           font-size: 1.2rem;
           opacity: 0.9;
@@ -126,7 +126,7 @@
           gap: 1rem;
           margin: 2rem 0;
         }
-        
+
         .project-card {
           background: var(--surface);
           padding: 1.5rem;
@@ -145,12 +145,12 @@
           height: 3px;
           background: linear-gradient(to right, var(--accent), transparent);
         }
-        
+
         .project-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
         }
-        
+
         .tech-stack {
           display: flex;
           gap: 0.8rem;
@@ -158,7 +158,7 @@
           margin-top: 1rem;
           justify-content: center;
         }
-        
+
         .tech-item {
           background: rgba(59, 130, 246, 0.15);
           padding: 0.6rem 1.2rem;
@@ -218,21 +218,21 @@
           .container {
             padding: 1rem;
           }
-          
+
           .avatar {
             width: 240px;
             height: 240px;
           }
-          
+
           h1 {
             font-size: 2.5rem;
           }
-          
+
           .section {
             padding: 1.5rem;
             margin-bottom: 1.5rem;
           }
-          
+
           .links-grid {
             grid-template-columns: 1fr;
           }
@@ -246,17 +246,17 @@
 </head>
 <body>
     <button class="theme-toggle">🌙</button>
-    
+
     <div class="container">
         <div class="avatar-container">
             <div class="avatar"></div>
         </div>
-        
+
         <div class="content">
             <section class="section">
                 <h1>ZeMeng Developer</h1>
                 <p class="motto">"Devote to technology, enrich life with code."</p>
-                
+
                 <div class="links-grid">
                     <a href="https://mengze.vip/" target="_blank" class="badge">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -319,6 +319,11 @@
                     </div>
                 </div>
             </section>
+            
+           <section class="section" id="latest-articles">
+                <h2>Latest Articles</h2>
+                <ul class="articles-list" style="list-style: none; padding-left: 1rem;"></ul>
+            </section>
 
             <section class="section">
                 <h2>Technical Arsenal</h2>
@@ -377,6 +382,47 @@
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.section').forEach(section => observer.observe(section));
+        
+        function fetchLatestArticles() {
+            const RSS_URL = 'https://mengze.vip/rss2.xml';
+            const CORS_PROXY = 'https://api.allorigins.win/raw?url=';  // 使用CORS代理
+
+            fetch(CORS_PROXY + encodeURIComponent(RSS_URL))
+                .then(response => response.text())
+                .then(xmlString => {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+                    const items = xmlDoc.querySelectorAll('item');
+                    const articlesList = document.querySelector('.articles-list');
+
+                    // 只显示最新5篇文章
+                    Array.from(items).slice(0, 5).forEach(item => {
+                        const title = item.querySelector('title').textContent;
+                        const link = item.querySelector('link').textContent;
+                        
+                        const listItem = document.createElement('li');
+                        listItem.style.marginBottom = '0.8rem';
+                        listItem.innerHTML = `
+                            <a href="${link}" target="_blank" class="badge" 
+                               style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                                ${title} >
+                            </a>
+                        `;
+                        articlesList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching articles:', error);
+                    document.querySelector('.articles-list').innerHTML = 
+                        '<li>Failed to load latest articles</li>';
+                });
+        }
+
+        // 在页面加载完成后执行
+        window.addEventListener('DOMContentLoaded', () => {
+            // 原有的观察者代码保持不变
+            fetchLatestArticles();
+        });
     </script>
 </body>
 </html>
