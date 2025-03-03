@@ -19,7 +19,7 @@
  * }
  */
 
-const { parse } = require('net'); // 引入IP地址解析模块
+const { isIP } = require('net'); // 引入IP地址验证方法
 
 /**
  * 请求处理主函数
@@ -35,7 +35,7 @@ exports.handler = async function(event) {
   const connectionHeader = headers['x-nf-client-connection-ip'] || '';
   const [clientIP, remoteIP] = connectionHeader.split(',');
   
-  // 使用IP版本解析器验证地址类型
+  // 使用IP版本验证方法
   const ipv4 = parseIPVersion(clientIP, 4);
   const ipv6 = parseIPVersion(remoteIP, 6);
   
@@ -44,12 +44,12 @@ exports.handler = async function(event) {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      ipv4: ipv4 || null, // 返回有效IPv4或null
-      ipv6: ipv6 || null, // 返回有效IPv6或null
-      isp: parseISP(headers), // 解析网络运营商
-      meta: { // 附加元数据
-        protocol: headers['x-forwarded-proto'], // 原始请求协议
-        country: headers['x-country-code'] // 云边缘节点位置
+      ipv4: ipv4 || null,
+      ipv6: ipv6 || null,
+      isp: parseISP(headers),
+      meta: {
+        protocol: headers['x-forwarded-proto'] || 'unknown',
+        country: headers['x-country-code'] || 'XX'
       }
     })
   };
@@ -60,29 +60,16 @@ exports.handler = async function(event) {
  * @param {string} ip - 待验证的IP地址
  * @param {number} version - 期望的IP版本（4或6）
  * @returns {string|null} 符合版本的IP地址或null
- * 
- * 实现原理：
- * 使用Node.js net模块解析IP地址，严格校验地址族类型
- * 支持处理IPv4映射的IPv6地址（如 ::ffff:192.0.2.128）
  */
 function parseIPVersion(ip, version) {
   if (!ip) return null;
-  const expectedFamily = version === 4 ? 'IPv4' : 'IPv6';
-  const isVersion = (netIP) => netIP.family === expectedFamily;
-  return parse(ip).some(isVersion) ? ip : null;
+  return isIP(ip) === version ? ip : null;
 }
 
 /**
  * 网络运营商解析器
  * @param {Object} headers - 请求头对象
  * @returns {string} 运营商标识字符串
- * 
- * 解析逻辑：
- * 1. 优先检测Netlify请求头特征，标识为Netlify CDN
- * 2. 回退解析Via头字段，提取中间代理信息
- * 3. 无法识别时返回'Unknown'
- * 
- * Via头格式示例："1.1 google, 3.0 cloudflare"
  */
 function parseISP(headers) {
   // Netlify专属标识检测
@@ -91,6 +78,7 @@ function parseISP(headers) {
   }
   
   // 通用Via头解析逻辑
-  const viaMatch = headers['via']?.match(/(\w+)\//);
+  const viaHeader = headers['via'] || '';
+  const viaMatch = viaHeader.match(/([a-z]+)\//i);
   return viaMatch ? viaMatch[1] : 'Unknown';
 }
