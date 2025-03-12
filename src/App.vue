@@ -30,28 +30,29 @@
         </div>
       </div>
 
-      <!-- 社交链接 -->
-      <div class="my-8">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-colors duration-300 hover:shadow-md">
-          <div class="space-y-3">
-            <a 
-              v-for="(link, index) in SOCIAL_LINKS"
-              :key="index"
-              :href="link.url"
-              target="_blank"
-              rel="noopener"
-              class="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors group"
-              @mouseenter="prefetchLink(link.url)"
-            >
-              <font-awesome-icon 
-                :icon="link.icon" 
-                class="text-gray-500 dark:text-gray-400 text-lg w-5 transition-colors group-hover:text-blue-500"
-              />
-              <span class="text-gray-700 dark:text-gray-200 font-medium">{{ link.title }}</span>
-            </a>
-          </div>
-        </div>
-      </div>
+<!-- 社交链接 -->
+<div class="my-8">
+  <div class="mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 transition-colors duration-300 hover:shadow-md max-w-4xl">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+      <a 
+        v-for="(link, index) in SOCIAL_LINKS"
+        :key="index"
+        :href="link.url"
+        target="_blank"
+        rel="noopener"
+        class="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors group"
+        :class="{ 'md:col-span-2': index >= 4 }"
+        @mouseenter="prefetchLink(link.url)"
+      >
+        <font-awesome-icon 
+          :icon="link.icon" 
+          class="text-gray-500 dark:text-gray-400 text-lg w-5 transition-colors group-hover:text-blue-500"
+        />
+        <span class="text-gray-700 dark:text-gray-200 font-medium">{{ link.title }}</span>
+      </a>
+    </div>
+  </div>
+</div>
 
       <!-- 项目展示 -->
       <div class="my-8">
