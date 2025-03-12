@@ -205,15 +205,21 @@
           icon: ['fas', 'cube']
         }])
 
-      const PROJECTS = Object.freeze([{
-        name: 'MengZe-Tool-Pro',
-        description: '面向移动端的专业网页调试工具套件，集成DOM检查、网络请求分析等功能',
-        url: 'https://github.com/YShenZe/MengZe-Tool-Pro'
-      },
+      const PROJECTS = Object.freeze([
+        {
+        name: 'Universal Proxy Template',
+        description: '一个使用Nodejs编写、支持Netlify/Vercel部署的通用反向代理模板仓库',
+        url: 'https://github.com/YShenZe/Universal-Proxy-Template'
+        },
         {
           name: 'Vercel/Netlify JsDelivr Mirror',
           description: '基于ServerLess架构的Jsdelivr镜像服务，支持自动缓存与智能路由',
           url: 'https://github.com/YShenZe/Vercel-Netlify-JsDelivr-Mirror'
+        },
+        {
+        name: 'MengZe-Tool-Pro',
+        description: '面向移动端的专业网页调试工具套件，集成DOM检查、网络请求分析等功能',
+        url: 'https://github.com/YShenZe/MengZe-Tool-Pro'
         },
         {
           name: 'Taildown-PHP',
