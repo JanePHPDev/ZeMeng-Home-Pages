@@ -1,9 +1,3 @@
 [build]
-functions = "netlify/functions/"
-node_bundler = "esbuild"
-
-[[redirects]]
-  from = "/test/"
-  to = "/.netlify/functions/ipinfo"
-  status = 200
-  force = true
+  publish = "dist"
+  command = "npm run build"
