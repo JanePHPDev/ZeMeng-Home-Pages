@@ -230,6 +230,11 @@
           name: 'Img2ASCIIx',
           description: '高性能JavaScript图像转ASCII艺术库，支持实时转换与动画效果',
           url: 'https://github.com/YShenZe/Img2ASCIIx'
+        },
+        {
+          name: 'Vercel Site Info API',
+          description: '基于Vercel Functions开发的支持Vercel部署的站点信息API',
+          url: 'https://github.com/YShenZe/Vercel-Site-Info-API'
         }])
 
       const TECHNOLOGIES = Object.freeze([{
