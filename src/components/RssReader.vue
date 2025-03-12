@@ -72,7 +72,7 @@ const fetchRSS = async () => {
     
     activeController = new AbortController()
     
-    const response = await axios.get('https://api.allorigins.win/get?url=', {
+    const response = await axios.get({
       params: {
         url: encodeURIComponent(props.rssUrl) 
       },
