@@ -72,7 +72,7 @@ const fetchRSS = async () => {
     
     activeController = new AbortController()
     
-    const response = await axios.get({
+    const response = await axios.get('', {
       params: {
         url: encodeURIComponent(props.rssUrl) 
       },
