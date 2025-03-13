@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <!--- 自我介绍 --->
+      <!-- 自我介绍 -->
       <div class="my-8">
         <div class="rounded-xl p-4 border-blue-200 block border bg-blue-50 dark:bg-blue-900/20">
           <div class="text-blue-600 text-sm mt-1 break-all dark:text-blue-400">
@@ -86,7 +86,7 @@
         </div>
       </div>
 
-      <!--- 最新文章-临时删除
+      <!-- 最新文章-临时删除
       <div class="my-8">
         <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">最新文章</h2>
         <RssReader
@@ -94,7 +94,7 @@
           class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg"
           />
       </div>
-       --->
+       -->
 
       <!-- 维护网站 -->
       <div class="my-8">
