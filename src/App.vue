@@ -257,6 +257,18 @@
       const MAINTAINED_SITE = Object.freeze({
         name: 'Jsdelivr-CN中国镜像站',
         url: 'https://cdn.mengze.vip'
+      },
+      {
+        name: '免费AI聊天-梦泽ChatOS',
+        url: 'https://chat.mengze.vip/'
+      },
+      {
+        name: 'Universal-Proxy-通用反代',
+        url: 'https://proxy.mengze.vip/'
+      },
+      {
+        name: '泽梦知识库',
+        url: 'https://learn.mengze.vip/'
       })
 
       const isDarkMode = ref(false)
