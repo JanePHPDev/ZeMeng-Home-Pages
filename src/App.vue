@@ -87,31 +87,35 @@
       </div>
 
       <!-- 最新文章-临时删除
-      <div class="my-8">
-        <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">最新文章</h2>
-        <RssReader
-          rss-url="https://mengze.vip/rss2.xml"
-          class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg"
-          />
-      </div>
-       -->
+            <div class="my-8">
+              <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">最新文章</h2>
+              <RssReader
+                rss-url="https://mengze.vip/rss2.xml"
+                class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg"
+                />
+            </div>
+             -->
 
       <!-- 维护网站 -->
       <div class="my-8">
         <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">在维护的网站</h2>
-        <a
-          :href="MAINTAINED_SITE.url"
-          target="_blank"
-          rel="noopener"
-          class="block bg-blue-50 border border-blue-200 rounded-xl p-4 hover:bg-blue-100 transition-colors dark:bg-blue-900/20 dark:border-blue-800"
-          >
-          <div class="font-medium text-blue-800 dark:text-blue-200">
-            {{ MAINTAINED_SITE.name }}
-          </div>
-          <div class="text-blue-600 text-sm mt-1 break-all dark:text-blue-400">
-            {{ MAINTAINED_SITE.url }}
-          </div>
-        </a>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <a
+            v-for="(site, index) in MAINTAINED_SITES"
+            :key="index"
+            :href="site.url"
+            target="_blank"
+            rel="noopener"
+            class="block bg-blue-50 border border-blue-200 rounded-xl p-4 hover:bg-blue-100 transition-colors dark:bg-blue-900/20 dark:border-blue-800 dark:hover:bg-blue-900/30"
+            >
+            <div class="font-medium text-blue-800 dark:text-blue-200">
+              {{ site.name }}
+            </div>
+            <div class="text-blue-600 text-sm mt-1 break-all dark:text-blue-400">
+              {{ site.url }}
+            </div>
+          </a>
+        </div>
       </div>
 
       <!-- 技术栈 -->
@@ -206,21 +210,20 @@
           icon: ['fas', 'cube']
         }])
 
-      const PROJECTS = Object.freeze([
-        {
+      const PROJECTS = Object.freeze([{
         name: 'Universal Proxy Template',
         description: '一个使用Nodejs编写、支持Netlify/Vercel部署的通用反向代理模板仓库',
         url: 'https://github.com/YShenZe/Universal-Proxy-Template'
-        },
+      },
         {
           name: 'Vercel/Netlify JsDelivr Mirror',
           description: '基于ServerLess架构的Jsdelivr镜像服务，支持自动缓存与智能路由',
           url: 'https://github.com/YShenZe/Vercel-Netlify-JsDelivr-Mirror'
         },
         {
-        name: 'MengZe-Tool-Pro',
-        description: '面向移动端的专业网页调试工具套件，集成DOM检查、网络请求分析等功能',
-        url: 'https://github.com/YShenZe/MengZe-Tool-Pro'
+          name: 'MengZe-Tool-Pro',
+          description: '面向移动端的专业网页调试工具套件，集成DOM检查、网络请求分析等功能',
+          url: 'https://github.com/YShenZe/MengZe-Tool-Pro'
         },
         {
           name: 'Taildown-PHP',
@@ -254,22 +257,22 @@
           name: 'Nodejs', used: false
         }])
 
-      const MAINTAINED_SITE = Object.freeze({
+      const MAINTAINED_SITES = Object.freeze([{
         name: 'Jsdelivr-CN中国镜像站',
         url: 'https://cdn.mengze.vip'
       },
-      {
-        name: '免费AI聊天-梦泽ChatOS',
-        url: 'https://chat.mengze.vip/'
-      },
-      {
-        name: 'Universal-Proxy-通用反代',
-        url: 'https://proxy.mengze.vip/'
-      },
-      {
-        name: '泽梦知识库',
-        url: 'https://learn.mengze.vip/'
-      })
+        {
+          name: '免费AI聊天-梦泽ChatOS',
+          url: 'https://chat.mengze.vip/'
+        },
+        {
+          name: 'Universal-Proxy-通用反代',
+          url: 'https://proxy.mengze.vip/'
+        },
+        {
+          name: '泽梦知识库',
+          url: 'https://learn.mengze.vip/'
+        }])
 
       const isDarkMode = ref(false)
       const toggleDarkMode = () => {
