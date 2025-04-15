@@ -18,7 +18,7 @@
         <div class="text-center w-full md:max-w-2xl">
           <div class="rounded-full overflow-hidden w-[150px] h-[150px] mx-auto mb-6 shadow-lg ring-4 ring-white/20">
             <img
-            src="https://cdn.mengze.vip/gh/YShenZe/Blog-Static-Resource@main/images/1f94e9c693374150b1f8dfd8de0fcce1.jpeg?format=webp&width=150"
+            src="https://cdn.mengze.vip/gh/YShenZe/Blog-Static-Resource@main/images/IMG_20250410_142254.jpg?format=webp&width=150"
             alt="ZeMeng Avatar"
             class="w-full h-full object-cover"
             loading="lazy"
@@ -27,7 +27,7 @@
           </div>
           <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">梦泽</h1>
           <p class="text-lg text-gray-600 dark:text-gray-400">
-            用心对待技术，用代码丰富生活
+            投诉科技，用代码丰富生活
           </p>
         </div>
       </div>
@@ -86,16 +86,6 @@
         </div>
       </div>
 
-      <!-- 最新文章-临时删除
-            <div class="my-8">
-              <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">最新文章</h2>
-              <RssReader
-                rss-url="https://mengze.vip/rss2.xml"
-                class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg"
-                />
-            </div>
-             -->
-
       <!-- 维护网站 -->
       <div class="my-8">
         <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">在维护的网站</h2>
@@ -145,7 +135,6 @@
         ref,
         onMounted
       } from 'vue'
-      import RssReader from './components/RssReader.vue'
       import {
         library
       } from '@fortawesome/fontawesome-svg-core'
@@ -169,11 +158,12 @@
 
       library.add(faBlogger, faFileAlt, faGem, faTv, faLinux, faQq, faMoon, faSun, faGithub, faCube)
 
-      const SOCIAL_LINKS = Object.freeze([{
-        title: '个人博客',
-        url: 'https://mengze.vip/',
-        icon: ['fab', 'blogger']
-      },
+      const SOCIAL_LINKS = Object.freeze([
+        {
+          title: '个人博客',
+          url: 'https://mengze.vip/',
+          icon: ['fab', 'blogger']
+        },
         {
           title: '英文博客',
           url: 'https://mengze.netlify.app/',
@@ -208,71 +198,88 @@
           title: 'KlpBBS',
           url: 'https://klpbbs.com/home.php?mod=space&do=profile&mobile=2',
           icon: ['fas', 'cube']
-        }])
+        }
+      ])
 
-      const PROJECTS = Object.freeze([{
-        name: 'Universal Proxy Template',
-        description: '一个使用Nodejs编写、支持Netlify/Vercel部署的通用反向代理模板仓库',
-        url: 'https://github.com/YShenZe/Universal-Proxy-Template'
-      },
+      const PROJECTS = Object.freeze([
         {
-          name: 'Vercel/Netlify JsDelivr Mirror',
-          description: '基于ServerLess架构的Jsdelivr镜像服务，支持自动缓存与智能路由',
+          name: 'Vercel-Netlify-JsDelivr-Mirror',
+          description: '基于Vercel/Netlify ServerLess编写的Jsdelivr反向代理配置文件模板仓库',
           url: 'https://github.com/YShenZe/Vercel-Netlify-JsDelivr-Mirror'
         },
         {
-          name: 'MengZe-Tool-Pro',
-          description: '面向移动端的专业网页调试工具套件，集成DOM检查、网络请求分析等功能',
-          url: 'https://github.com/YShenZe/MengZe-Tool-Pro'
+          name: 'TurboFeLy',
+          description: '现代化的界面无刷新加载库兼原生 SPA 加速库，提供比 Pjax 更现代的解决方案',
+          url: 'https://github.com/YShenZe/TurboFeLy'
         },
         {
-          name: 'Taildown-PHP',
-          description: '基于PHP 8.2开发的开源项目版本控制系统，支持语义化版本管理',
+          name: 'TailDwon-PHP',
+          description: 'PHP编写的多版本下载站程序，支持版本发布、公告功能',
           url: 'https://github.com/YShenZe/TailDwon-PHP'
         },
         {
-          name: 'Img2ASCIIx',
-          description: '高性能JavaScript图像转ASCII艺术库，支持实时转换与动画效果',
-          url: 'https://github.com/YShenZe/Img2ASCIIx'
+          name: 'ZeMeng-Home-Pages',
+          description: '使用Vuejs+TailwindCSS编写的个人主页，托管于Github使用Netlify构建部署',
+          url: 'https://github.com/YShenZe/ZeMeng-Home-Pages'
         },
         {
-          name: 'Vercel Site Info API',
-          description: '基于Vercel Functions开发的支持Vercel部署的站点信息API',
-          url: 'https://github.com/YShenZe/Vercel-Site-Info-API'
-        }])
+          name: 'MengZe-Tool-Pro',
+          description: '专业级网页调试工具套件，集成多种实用功能帮助开发者提升调试效率',
+          url: 'https://github.com/YShenZe/MengZe-Tool-Pro'
+        },
+        {
+          name: 'MengZe-Whois-Vue',
+          description: '基于 Vue 3 + Element Plus 的 WHOIS 域名信息查询工具',
+          url: 'https://github.com/YShenZe/MengZe-Whois-Vue'
+        }
+      ])
 
-      const TECHNOLOGIES = Object.freeze([{
-        name: 'PHP', used: true
-      },
-        {
-          name: 'Vue2', used: true
-        },
-        {
-          name: 'TailwindCSS', used: true
-        },
-        {
-          name: 'Bootstrap5', used: true
-        },
-        {
-          name: 'Nodejs', used: false
-        }])
+      const TECHNOLOGIES = Object.freeze([
+        { name: 'PHP', used: true },
+        { name: 'Vue2', used: true },
+        { name: 'TailwindCSS', used: true },
+        { name: 'Bootstrap5', used: true },
+        { name: 'Nodejs', used: false }
+      ])
 
-      const MAINTAINED_SITES = Object.freeze([{
-        name: 'Jsdelivr-CN中国镜像站',
-        url: 'https://cdn.mengze.vip'
-      },
+      const MAINTAINED_SITES = Object.freeze([
         {
-          name: '免费AI聊天-梦泽ChatOS',
-          url: 'https://chat.mengze.vip/'
+          name: '个人博客',
+          url: 'https://mengze.vip'
         },
         {
-          name: 'Universal-Proxy-通用反代',
-          url: 'https://proxy.mengze.vip/'
+          name: '短链接服务',
+          url: 'https://mzurl.xyz'
         },
         {
-          name: '泽梦知识库',
-          url: 'https://learn.mengze.vip/'
-        }])
+          name: '状态监控',
+          url: 'https://status.mengze.vip'
+        },
+        {
+          name: '个人主页',
+          url: 'https://i.mengze.vip'
+        },
+        {
+          name: '通用反代',
+          url: 'https://proxy.mengze.vip'
+        },
+        {
+          name: 'Jsdelivr镜像',
+          url: 'https://cdn.mengze.vip'
+        },
+        {
+          name: '梗图库',
+          url: 'https://meme.mengze.vip'
+        },
+        {
+          name: '知识库',
+          url: 'https://learn.mengze.vip'
+        },
+        {
+          name: '爱徒的网站',
+          url: 'https://movie.wunian.xyz'
+        }
+      ])
 
       const isDarkMode = ref(false)
       const toggleDarkMode = () => {
