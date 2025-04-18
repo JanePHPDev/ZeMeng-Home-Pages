@@ -278,6 +278,10 @@
         {
           name: '爱徒的网站',
           url: 'https://movie.wunian.xyz'
+        },
+        {
+          name: 'MBTI 性格测试',
+          url: 'https://mbti.mengze.vip/'
         }
       ])
 
