@@ -276,12 +276,20 @@
           url: 'https://learn.mengze.vip'
         },
         {
-          name: '爱徒的网站',
-          url: 'https://movie.wunian.xyz'
-        },
-        {
           name: 'MBTI 性格测试',
           url: 'https://mbti.mengze.vip/'
+        },
+        {
+          name: '梦泽Flags',
+          url: 'https://flags.mengze.vip'
+        },
+        {
+          name: '无限影视(徒弟网站)',
+          url: 'https://wunian.netlify.app'
+        },
+        {
+          name: '勿念博客(徒弟网站)',
+          url: 'https://wunian.xyz/'
         }
       ])
 
