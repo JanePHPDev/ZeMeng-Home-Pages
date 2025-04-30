@@ -4,618 +4,336 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>梦泽聊天室</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
   <style>
     :root {
       --primary: #2ecc71;
       --secondary: #3498db;
-      --background: #f8f9fa;
       --success: #27ae60;
       --warning: #f1c40f;
       --danger: #e74c3c;
-      --text: #2c3e50;
-      --border-radius: 12px;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      --spacing: 16px;
-      --primary-gradient: linear-gradient(135deg, #2ecc71, #27ae60);
-      --secondary-gradient: linear-gradient(135deg, #3498db, #2980b9);
-      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    .chat-container {
+      transition: all 0.3s ease;
+      height: 80vh;
     }
 
-    body {
-      margin: 0;
-      padding: var(--spacing);
-      background: var(--background);
-      min-height: 100vh;
-      color: var(--text);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-    }
-
-    /* 修改点1 - 容器高度设置 */
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing);
-      max-width: 1000px;
-      margin: 0 auto;
-      height: 80%; /* 新增：计算视口高度减去padding */
-    }
-
-    .loading-indicator {
-      display: none;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 8px 16px;
-      background: var(--primary-gradient);
-      color: white;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      animation: slideIn 0.3s ease;
-    }
-
-    /* 修改点2 - 主布局高度继承 */
-    .main-layout {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      grid-template-rows: auto 1fr auto; /* 调整行分配 */
-      gap: var(--spacing);
-      height: 100%; /* 继承容器高度 */
-    }
-
-    /* 修改点3 - 聊天区域弹性布局 */
-    .editor-section {
-      grid-column: 1;
-      grid-row: 1 / 3; /* 跨两行 */
-      display: flex;
-      flex-direction: column;
-      background: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      height: 100%;
-    }
-
-    /* 修改点4 - 核心高度限制 */
-    .chat-messages {
-      flex: 1;
-      max-height: 50vh; /* 新增最大高度限制 */
-      overflow-y: auto;
-      padding: 24px;
-      background: white;
-      scrollbar-width: thin;
-      position: relative; /* 新增滚动定位 */
-    }
-
-    /* 保留原有滚动条样式 */
-    .chat-messages::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .chat-messages::-webkit-scrollbar-thumb {
-      background-color: #ddd;
-      border-radius: 4px;
+    .chat-container.fullscreen {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      z-index: 1050;
+      margin: 0 !important;
+      height: 100vh !important;
+      border-radius: 0 !important;
     }
 
     .message {
-      margin: 8px 0;
-      padding: 12px 16px;
-      border-radius: 16px;
-      max-width: 80%;
+      max-width: 85%;
+      border-radius: 1rem !important;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      animation: fadeIn 0.3s ease;
-    }
-
-    .message-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      margin-bottom: 6px;
-    }
-
-    .message-header span:first-child {
-      font-weight: 600;
-    }
-
-    .message-header span:last-child {
-      color: #888;
-      font-size: 0.75rem;
-    }
-
-    .message-content {
-      font-size: 0.95rem;
-      line-height: 1.4;
-      word-break: break-word;
     }
 
     .message.me {
-      background: var(--primary-gradient);
-      color: white;
-      margin-left: auto;
-      border-radius: 16px 16px 4px 16px;
+      background: linear-gradient(135deg, var(--primary), var(--success)) !important;
+      border-bottom-right-radius: 0.25rem !important;
     }
 
     .message:not(.me) {
       background: #f8f9fa;
-      margin-right: auto;
-      border-radius: 16px 16px 16px 4px;
+      border-bottom-left-radius: 0.25rem !important;
     }
 
-    .chat-input {
-      display: flex;
-      align-items: center;
-      padding: 16px;
-      background: white;
-      border-top: 1px solid #eee;
-      flex-shrink: 0; /* 防止输入区域被压缩 */
-    }
-
-    #messageInput {
-      flex: 1;
-      padding: 12px 16px;
-      border: 2px solid #e0e0e0;
-      border-radius: 24px;
-      font-size: 16px;
-      transition: border-color 0.3s;
-      min-width: 0;
-    }
-
-    #messageInput:focus {
-      border-color: var(--primary);
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
-    }
-
-    .chat-input button {
-      padding: 10px 24px;
-      background: var(--primary-gradient);
-      color: white;
-      border: none;
-      border-radius: 24px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      font-weight: 600;
-      margin-left: 8px;
-    }
-
-    .chat-input button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
-    .editor-status {
-      padding: 12px 24px;
-      background: #f8f9fa;
-      font-size: 0.9rem;
-      color: #666;
-      flex-shrink: 0; /* 防止状态栏被压缩 */
-    }
-
-    #users {
-      background: white;
-      border-radius: var(--border-radius);
-      padding: var(--spacing);
-      box-shadow: var(--shadow);
-      height: 100%;
-    }
-
-    .user-list {
-      margin-top: 16px;
-    }
-
-    .user-item {
-      display: flex;
-      align-items: center;
-      padding: 10px 12px;
-      margin: 4px 0;
-      background: #f8f9fa;
-      border-radius: 12px;
-      transition: background 0.2s;
-    }
-
-    .user-item:hover {
-      background: #f0f2f5;
-    }
-
-    .user-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--primary-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      margin-right: 12px;
-    }
-
-    .user-marker {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--success);
-      margin-right: 8px;
-      box-shadow: 0 0 0 2px white;
-    }
-
-    #broadcast {
-      background: white;
-      border-radius: var(--border-radius);
-      padding: var(--spacing);
-      box-shadow: var(--shadow);
-      height: 100%;
-    }
-
-    .broadcast-messages {
-      margin-top: 16px;
-    }
-
-    .broadcast-message {
-      padding: 12px 16px;
-      margin: 8px 0;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .broadcast-message.info {
-      background: rgba(52, 152, 219, 0.1);
-      border-left: 4px solid #3498db;
-    }
-
-    .broadcast-message.warning {
-      background: rgba(241, 196, 15, 0.1);
-      border-left: 4px solid #f1c40f;
-    }
-
-    .broadcast-message.danger {
-      background: rgba(231, 76, 60, 0.1);
-      border-left: 4px solid #e74c3c;
-    }
-
-    .broadcast-icon {
-      margin-right: 12px;
-      font-size: 1.2em;
-    }
-
-    .announcement-box {
-      background: white;
-      border-radius: var(--border-radius);
-      padding: var(--spacing);
-      box-shadow: var(--shadow);
-    }
-
-    .announcement-header {
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--primary);
-    }
-
-    .content-item {
-      padding: 8px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .content-item:last-child {
-      border-bottom: none;
-    }
-
-    .warning-text {
-      color: var(--warning);
-    }
-
-    @media (max-width: 768px) {
-      .main-layout {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr auto;
-      }
-      
-      #users {
-        max-width: none;
-      }
-      
-      .message {
-        max-width: 90%;
-      }
-      
-      .chat-input {
-        flex-wrap: wrap;
-      }
-      
-      #messageInput {
-        flex: 1 1 0;
-        min-width: 0;
-      }
-      
-      .chat-input button {
-        white-space: nowrap;
-      }
-    }
-
-    @keyframes slideIn {
-      from { transform: translateY(10px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-        .user-avatar-img {
+    .user-avatar-img {
       width: 40px;
       height: 40px;
-      border-radius: 50%;
       object-fit: cover;
-      margin-right: 12px;
-      border: 2px solid #fff;
-      box-shadow: var(--shadow);
     }
 
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+    #chatMessages {
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) rgba(0,0,0,0.1);
     }
 
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: var(--border-radius);
-      width: 300px;
+    #chatMessages::-webkit-scrollbar {
+      width: 8px;
     }
 
-    .modal-content input {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      border: 1px solid #ddd;
+    #chatMessages::-webkit-scrollbar-thumb {
+      background-color: var(--primary);
       border-radius: 4px;
     }
   </style>
 </head>
-<body>
-  <div class="loading-indicator" id="loading">连接中...</div>
-  
-  <div id="userModal" class="modal">
-    <div class="modal-content">
-      <h3>设置用户信息</h3>
-      <input type="text" id="userName" placeholder="用户名（必填）" required>
-      <input type="number" id="userQQ" placeholder="QQ号（可选）">
-      <button onclick="saveUserInfo()">进入聊天室</button>
-    </div>
+<body class="bg-light">
+  <!-- 加载提示 -->
+  <div class="position-fixed top-0 end-0 m-3 alert alert-primary d-none" id="loading">
+    <span class="spinner-border spinner-border-sm"></span>
+    连接中...
   </div>
 
-  <div class="container">
-    <div class="main-layout">
-      <div class="editor-section">
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input">
-          <input 
-            type="text" 
-            id="messageInput" 
-            placeholder="输入消息..."
-            onkeypress="if(event.keyCode === 13) sendMessage()"
-          >
-          <button onclick="sendMessage()">发送</button>
+  <!-- 用户信息模态框 -->
+  <div class="modal fade" id="userModal" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">用户设置</h5>
         </div>
-        <div class="editor-status">
-          在线用户: <span id="userCount">0</span> | 
-          消息总数: <span id="messageCount">0</span>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">用户名</label>
+            <input type="text" class="form-control" id="userName" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">QQ号（可选）</label>
+            <input type="number" class="form-control" id="userQQ">
+          </div>
         </div>
-      </div>
-
-      <div class="user-section">
-        <div id="users">
-          <h3>在线用户 (<span id="userCount">0</span>)</h3>
-          <div class="user-list" id="userList"></div>
-        </div>
-      </div>
-
-      <div class="broadcast-section">
-        <div id="broadcast">
-          <h3>系统通知</h3>
-          <div class="broadcast-messages" id="broadcastMessages"></div>
-        </div>
-      </div>
-
-      <div class="announcement-section">
-        <div class="announcement-box">
-          <div class="announcement-header">系统公告</div>
-          <div class="content-item"><b>WebSocket服务器由@3888165101 赞助</b></b></div>
-          <div class="content-item warning-text">请文明聊天，禁止发送敏感内容</div>
-          <div class="content-item">消息自动保存最近50条</div>
-          <div class="content-item">技术支持QQ群：940994905</div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" onclick="saveUserInfo()">进入聊天室</button>
         </div>
       </div>
     </div>
   </div>
 
+  <div class="container py-3">
+    <div class="row g-3">
+      <!-- 主聊天区 -->
+      <div class="col-lg-8">
+        <div class="chat-container card h-100 shadow-sm">
+          <div class="card-header d-flex justify-content-between align-items-center bg-white">
+            <h5 class="m-0 text-primary">
+              <i class="bi bi-chat-dots me-2"></i>梦泽聊天室
+            </h5>
+            <button class="btn btn-sm btn-outline-secondary" onclick="toggleFullscreen()">
+              <i class="bi bi-arrows-fullscreen"></i>
+            </button>
+          </div>
+          
+          <div class="card-body p-0">
+            <div class="chat-messages p-3" id="chatMessages" style="height: calc(100% - 120px); overflow-y: auto"></div>
+            
+            <div class="card-footer bg-white border-top">
+              <div class="input-group">
+                <input type="text" class="form-control" id="messageInput" 
+                      placeholder="输入消息..." 
+                      autocomplete="off"
+                      onkeypress="if(event.keyCode === 13) sendMessage()">
+                <button class="btn btn-success" onclick="sendMessage()">
+                  <i class="bi bi-send"></i>
+                </button>
+              </div>
+              <div class="mt-2 text-muted small">
+                <span class="me-3"><i class="bi bi-people"></i> <span id="userCount">0</span></span>
+                <span><i class="bi bi-chat"></i> <span id="messageCount">0</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 侧边栏 -->
+      <div class="col-lg-4">
+        <div class="row g-3">
+          <!-- 在线用户 -->
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <h5 class="m-0"><i class="bi bi-person-circle me-2"></i>在线用户</h5>
+              </div>
+              <div class="card-body p-2" style="height: 300px; overflow-y: auto">
+                <div class="user-list list-group list-group-flush" id="userList"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 系统公告 -->
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-white">
+                <h5 class="m-0"><i class="bi bi-megaphone me-2"></i>系统公告</h5>
+              </div>
+              <div class="card-body small">
+                <ul class="list-unstyled mb-0">
+                  <li class="mb-2"><i class="bi bi-server me-2"></i>服务器由@3888165101 赞助</li>
+                  <li class="mb-2 text-danger"><i class="bi bi-exclamation-triangle me-2"></i>请文明聊天</li>
+                  <li class="mb-2"><i class="bi bi-save me-2"></i>保存最近50条消息</li>
+                  <li><i class="bi bi-people me-2"></i>技术支持QQ群：940994905</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     const loading = document.getElementById('loading');
     const chatMessages = document.getElementById('chatMessages');
     const messageInput = document.getElementById('messageInput');
     const userList = document.getElementById('userList');
-    const userCount = document.getElementById('userCount');
+    const userCounts = document.querySelectorAll('#userCount');
     const messageCount = document.getElementById('messageCount');
-    const broadcastMessages = document.getElementById('broadcastMessages');
 
     let ws;
     let reconnectAttempts = 0;
     const maxReconnectAttempts = 5;
-    let currentUser = {
-        name: '',
-        qq: ''
-    };
+    let currentUser = { name: '', qq: '' };
 
+    // 全屏切换
+    function toggleFullscreen() {
+      const container = document.querySelector('.chat-container');
+      container.classList.toggle('fullscreen');
+      
+      const fullscreenBtn = document.querySelector('[onclick="toggleFullscreen()"]');
+      fullscreenBtn.innerHTML = container.classList.contains('fullscreen') 
+        ? '<i class="bi bi-fullscreen-exit"></i>' 
+        : '<i class="bi bi-arrows-fullscreen"></i>';
+    }
+
+    // Cookie操作
     function setCookie(name, value, days) {
-        const d = new Date();
-        d.setTime(d.getTime() + (days*24*60*60*1000));
-        document.cookie = `${name}=${encodeURIComponent(value)};expires=${d.toUTCString()};path=/`;
+      const d = new Date();
+      d.setTime(d.getTime() + (days*24*60*60*1000));
+      document.cookie = `${name}=${encodeURIComponent(value)};expires=${d.toUTCString()};path=/`;
     }
 
     function getCookie(name) {
-        return document.cookie.split('; ').reduce((r, v) => {
-            const parts = v.split('=');
-            return parts[0] === name ? decodeURIComponent(parts[1]) : r
-        }, '');
+      return document.cookie.split('; ').reduce((r, v) => {
+        const parts = v.split('=');
+        return parts[0] === name ? decodeURIComponent(parts[1]) : r
+      }, '');
     }
 
+    // 初始化
     window.onload = function() {
-        const savedUser = getCookie('chatUser');
-        if (savedUser) {
-            try {
-                currentUser = JSON.parse(savedUser);
-                document.getElementById('userModal').style.display = 'none';
-                connect();
-            } catch(e) {
-                showUserModal();
-            }
-        } else {
-            showUserModal();
+      const savedUser = getCookie('chatUser');
+      const userModal = new bootstrap.Modal('#userModal');
+
+      if (savedUser) {
+        try {
+          currentUser = JSON.parse(savedUser);
+          connect();
+        } catch {
+          userModal.show();
         }
+      } else {
+        userModal.show();
+      }
     };
 
-    function showUserModal() {
-        document.getElementById('userModal').style.display = 'flex';
-    }
-
+    // 保存用户信息
     function saveUserInfo() {
-        const nameInput = document.getElementById('userName');
-        const qqInput = document.getElementById('userQQ');
-        
-        if (!nameInput.value.trim()) {
-            alert('用户名不能为空');
-            return;
-        }
-        
-        currentUser = {
-            name: nameInput.value.trim(),
-            qq: qqInput.value.trim()
-        };
-        
-        setCookie('chatUser', JSON.stringify(currentUser), 30);
-        document.getElementById('userModal').style.display = 'none';
-        connect();
+      const name = document.getElementById('userName').value.trim();
+      if (!name) return alert('用户名不能为空');
+
+      currentUser = {
+        name: name,
+        qq: document.getElementById('userQQ').value.trim()
+      };
+
+      setCookie('chatUser', JSON.stringify(currentUser), 30);
+      bootstrap.Modal.getInstance('#userModal').hide();
+      connect();
     }
 
+    // WebSocket连接
     function connect() {
-        loading.style.display = 'block';
-        ws = new WebSocket('wss://wss.mzurl.xyz:35005');
+      loading.classList.remove('d-none');
+      ws = new WebSocket('wss://wss.mzurl.xyz:35005');
 
-        ws.onopen = () => {
-            // 新增：连接时清除旧缓存
-            localStorage.removeItem('chatHistory');
-            reconnectAttempts = 0;
-            loading.style.display = 'none';
-            ws.send(JSON.stringify({
-                type: 'join',
-                data: currentUser
-            }));
-        };
+      ws.onopen = () => {
+        loading.classList.add('d-none');
+        ws.send(JSON.stringify({ type: 'join', data: currentUser }));
+      };
 
-        ws.onmessage = handleMessage;
+      ws.onmessage = handleMessage;
 
-        ws.onclose = () => {
-            if (reconnectAttempts < maxReconnectAttempts) {
-                setTimeout(connect, Math.min(1000 * reconnectAttempts, 5000));
-                reconnectAttempts++;
-                loading.textContent = `重连中 (${reconnectAttempts}/${maxReconnectAttempts})...`;
-                loading.style.display = 'block';
-            }
-        };
+      ws.onclose = () => {
+        if (reconnectAttempts < maxReconnectAttempts) {
+          setTimeout(connect, Math.min(1000 * reconnectAttempts, 5000));
+          reconnectAttempts++;
+          loading.innerHTML = `
+            <span class="spinner-border spinner-border-sm"></span>
+            重连中 (${reconnectAttempts}/${maxReconnectAttempts})...
+          `;
+        }
+      };
+    }
 
+    // 消息处理
+    function handleMessage(e) {
+      try {
+        const msg = JSON.parse(e.data);
         const handlers = {
-            history: data => {
-                // 修改：直接使用服务器历史记录
-                data.messages.forEach(appendMessage);
-                messageCount.textContent = data.messages.length;
-            },
-            message: data => {
-                appendMessage(data);
-                // 移除本地存储逻辑
-                messageCount.textContent = parseInt(messageCount.textContent) + 1;
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            },
-            notification: data => {
-                const msg = document.createElement('div');
-                msg.className = `broadcast-message ${data.type || 'info'}`;
-                msg.innerHTML = `
-                    <span class="broadcast-icon">📢</span>
-                    ${data.message}
-                `;
-                broadcastMessages.appendChild(msg);
-            },
-            userlist: data => {
-                userList.innerHTML = data.users.map(user => `
-                    <div class="user-item">
-                        <img class="user-avatar-img" src="${user.avatar}" alt="${user.name}">
-                        <div>${user.name}${user.name === currentUser.name ? ' (你)' : ''}</div>
-                    </div>
-                `).join('');
-                userCount.textContent = data.users.length;
-            }
+          history: data => data.messages.forEach(appendMessage),
+          message: data => {
+            appendMessage(data);
+            messageCount.textContent = parseInt(messageCount.textContent) + 1;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          },
+          userlist: data => {
+            userList.innerHTML = data.users.map(user => `
+              <li class="list-group-item d-flex align-items-center">
+                <img src="${user.avatar || '//q1.qlogo.cn/g?b=qq&nk=${user.qq}&s=100'}" 
+                     class="user-avatar-img rounded-circle me-2">
+                <span>${user.name}${user.name === currentUser.name ? ' <small>(我)</small>' : ''}</span>
+              </li>
+            `).join('');
+            userCounts.forEach(el => el.textContent = data.users.length);
+          }
         };
-
-        function escapeHtml(unsafe) {
-            return unsafe.toString()
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function appendMessage(msg) {
-            const isMe = msg.user === currentUser.name;
-            const msgEl = document.createElement('div');
-            msgEl.className = `message ${isMe ? 'me' : ''}`;
-            msgEl.innerHTML = `
-                <div class="message-header">
-                    <span>${escapeHtml(msg.user)}</span>
-                    <span>${new Date(msg.timestamp).toLocaleTimeString()}</span>
-                </div>
-                <div class="message-content">${escapeHtml(msg.content)}</div>
-            `;
-            chatMessages.appendChild(msgEl);
-        }
-
-        function handleMessage(e) {
-            try {
-                const msg = JSON.parse(e.data);
-                if (handlers[msg.type]) handlers[msg.type](msg.data);
-            } catch (error) {
-                console.error('消息解析错误:', error);
-            }
-        }
+        if (handlers[msg.type]) handlers[msg.type](msg.data);
+      } catch (error) {
+        console.error('消息解析错误:', error);
+      }
     }
 
+    // 添加消息
+    function appendMessage(msg) {
+      const isMe = msg.user === currentUser.name;
+      const time = new Date(msg.timestamp).toLocaleTimeString();
+      
+      const messageEl = document.createElement('div');
+      messageEl.className = `alert ${isMe ? 'alert-success me' : 'alert-light'} message`;
+      messageEl.innerHTML = `
+        <div class="d-flex justify-content-between small mb-2">
+          <span>${escapeHtml(msg.user)}</span>
+          <span>${time}</span>
+        </div>
+        <div class="message-content">${escapeHtml(msg.content)}</div>
+      `;
+      chatMessages.appendChild(messageEl);
+    }
+
+    // 发送消息
     function sendMessage() {
-        const content = messageInput.value.trim();
-        if (content && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({
-                type: 'message',
-                data: { content }
-            }));
-            messageInput.value = '';
-            messageInput.focus();
-        }
+      const content = messageInput.value.trim();
+      if (content && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'message', data: { content }}));
+        messageInput.value = '';
+        messageInput.focus();
+      }
     }
-</script>
+
+    // 安全转义
+    function escapeHtml(unsafe) {
+      return unsafe.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
 </html>
