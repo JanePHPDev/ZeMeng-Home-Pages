@@ -18,7 +18,7 @@
         <div class="text-center w-full md:max-w-2xl">
           <div class="rounded-full overflow-hidden w-[150px] h-[150px] mx-auto mb-6 shadow-lg ring-4 ring-white/20">
             <img
-            src="https://cdn.mengze.vip/gh/YShenZe/Blog-Static-Resource@main/images/IMG_20250410_142254.jpg?format=webp&width=150"
+            src="https://cdn.mengze.vip/gh/YShenZe/Blog-Static-Resource@main/images/1746460967151.jpg?format=webp&width=150"
             alt="ZeMeng Avatar"
             class="w-full h-full object-cover"
             loading="lazy"
