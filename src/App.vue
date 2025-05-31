@@ -243,6 +243,10 @@
       ])
 
       const MAINTAINED_SITES = Object.freeze([
+         {
+          name: '情侣空间',
+          url: 'https://lover.mengze.vip'
+        },
         {
           name: '个人博客',
           url: 'https://mengze.vip'
