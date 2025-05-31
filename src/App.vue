@@ -27,7 +27,7 @@
           </div>
           <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">梦泽</h1>
           <p class="text-lg text-gray-600 dark:text-gray-400">
-            投诉科技，用代码丰富生活
+            投身科技，用代码丰富生活
           </p>
         </div>
       </div>
