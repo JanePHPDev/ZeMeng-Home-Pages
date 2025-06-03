@@ -4,7 +4,7 @@
       <!-- 暗色模式切换按钮 -->
       <button
         @click="toggleDarkMode"
-        class="fixed top-4 right-4 p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow z-50"
+        class="fixed top-4 right-4 p-4 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow z-50"
         aria-label="切换暗色模式"
         >
         <font-awesome-icon
