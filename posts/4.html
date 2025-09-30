@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang='zh'><head><style type='text/css'>html,body{padding:4px 8px 4px 8px;font-family:'customfont';}h1,h2,h3,h4,h5,h6{font-family:'sans-serif-condensed';}a{color: #388E3C;text-decoration:underline;}img{height:auto;max-width:100%;max-height: 90vh;margin:auto;}html,body{color:#303030;}blockquote{color:#73747d;}</style><style>video, img { max-width: 100%; } pre { max-width: 100%; overflow: auto; } table, th, td {  border: 1px solid black; border-collapse: collapse; border-spacing: 0; padding: 6px; } .floatl {float: left;} .clear {clear:both;} button:hover,button:active {filter: invert(1);} button { display: inline-block; box-sizing: border-box; border: none; border-radius: 4px; padding: 0 16px; min-width: 64px; height: 36px; font-family: 'Roboto'; font-size: 14px; font-weight: 500;  line-height: 36px; overflow: hidden; outline: none; vertical-align: middle; text-align: center; text-overflow: ellipsis; text-transform: uppercase; box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); margin: 4px 4px 8px 0px;}    .emojibtn,.fa {font-size:250%; background: transparent; padding: 0px; min-width:0px;}    .sticky {position: sticky; display: inline-block; border: 0px solid black;} body{margin:0;padding:0.5vh 3.5vw} .header_no_underline { text-decoration: none; color: black; } h1 < a.header_no_underline { border-bottom: 2px solid #eaecef; }  h1,h2 { border-bottom: 2px solid #696969; } blockquote{padding:0px 14px;border-left:3.5px solid #dddddd;margin:4px 0}.video-container > p { margin: 0; }.task-list-item { list-style-type:none; text-indent: -1.4em; } li.task-list-item > pre, li.task-list-item > ul > li { text-indent: 0pt; }p > a { word-break:break-all; }span.delimiter::before { content: ', '; } .front-matter-container { margin-bottom: 1.5em; border-bottom: 2px solid black; } .front-matter-item { text-align: right; margin-bottom: 0.25em; } .front-matter-container-title { font-weight: bold; font-size: 110%; } .front-matter-container-tags { white-space: pre; overflow: scroll; font-size: 80%; } div.front-matter-item > .post-item-tags { padding: 0.1em 0.4em; border-radius: 50rem; background-color: #dee2e6; } div.front-matter-item > span.post-item-tags:not(:first-child) { margin-left: 0.25em; } div.front-matter-item > span.post-delimiter-tags::before { content: ' '; }.markor-table-of-contents { border: 1px solid black; border-radius: 2px; } .markor-table-of-contents > h1 { padding-left: 14px; margin-bottom: -8px; border-bottom: 1px solid black; } .markor-table-of-contents-list li { margin-left: -12px; } .markor-table-of-contents-list a { text-decoration: none; }</style><link rel='stylesheet' href='../prism/themes/prism.min.css'/><link rel='stylesheet' href='../prism/prism-markor.css'/><link rel='stylesheet' href='../prism/plugins/toolbar/prism-toolbar.css'/><script src='../prism/prism.js'></script><script src='../prism/components.js'></script><script src='../prism/prism-markor.js'></script><script src='../prism/plugins/autoloader/prism-autoloader.min.js'></script><script src='../prism/plugins/toolbar/prism-toolbar.min.js'></script><script src='../prism/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js'></script><style> 
+html, body { 
+/* 
+font-family: sans-serif-condensed; 
+font-size: 80%; 
+*/ 
+} 
+</style> 
+ 
+<script type="text/javascript"> 
+function onPageLoaded() { 
+/* 
+if ('format-markdown fileext-md' == 'MarkdownTextConverter') { 
+ window.scrollTo(0, document.body.scrollHeight); 
+} 
+*/ 
+} 
+</script><script> function onPageLoaded_markor_private() {
+usePrismCodeBlock();wrapCodeBlockWords();
+onPageLoaded(); }
+</script><style type='text/css'>@font-face { font-family: customfont; src: url('../fonts/Liberation Sans (Arial).ttf'); }</style></head>
+<body class='format-markdown fileext-md' onload='onPageLoaded_markor_private();'>
+
+<!-- USER DOCUMENT CONTENT -->
+
+
+<div class='front-matter-container'><div class='front-matter-item front-matter-container-title'><span class='post-item-title'>几种常用的Cross-Origin跨域问题解决方案合集</span>
+</div>
+<div class='front-matter-item front-matter-container-tags'><span class='post-item-tags'>跨域问题</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>Cross-Origin</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>JavaScript</span>
+</div>
+<div class='front-matter-item front-matter-container-date'><span class='post-item-date'>2025-03-02 21:11:31</span>
+</div>
+</div>
+<p line="9">跨域（Cross-Origin）是浏览器出于安全考虑而实施的一种限制机制，用于阻止网页从一个 <strong line="9">源（Origin）</strong> 向另一个源发起未经许可的资源请求或交互。</p>
+<h2 id="什么是跨域" line="10"><a href="#什么是跨域" class="header_no_underline" line="10">什么是跨域？</a></h2>
+<p line="11"><strong line="11">同源策略（Same-Origin Policy）</strong></p>
+<ul line="12">
+<li line="12"><strong line="12">源（Origin）的定义</strong>：由<strong line="12">协议（Protocol）</strong>、**域名（Domain）<strong line="12">和</strong>端口（Port）**三部分组成。例如，<code line="12">https://www.example.com:443</code>。</li>
+<li line="13"><strong line="13">同源判断</strong>：两个 URL 的协议、域名、端口<strong line="13">完全一致</strong>才属于同源。<strong line="13">任意一项不同即构成跨域</strong>。
+<ul line="14">
+<li line="14">✅ 同源：<code line="14">https://a.com</code> 和 <code line="14">https://a.com/api</code></li>
+<li line="15">❌ 跨域：<code line="15">https://a.com</code> 和 <code line="15">http://a.com</code>（协议不同）、<code line="15">https://a.com</code> 和 <code line="15">https://b.com</code>（域名不同）、<code line="15">https://a.com:80</code> 和 <code line="15">https://a.com:8080</code>（端口不同）。
+<strong line="16">跨域的限制范围</strong>
+浏览器会拦截以下跨域行为：</li>
+</ul>
+</li>
+<li line="18"><strong line="18">AJAX / Fetch 请求</strong>：默认禁止跨域请求（需服务器显式允许）。</li>
+<li line="19"><strong line="19">DOM 访问</strong>：禁止通过 JavaScript 读取跨域页面的 DOM（如 <code line="19">iframe</code> 内容）。</li>
+<li line="20"><strong line="20">Cookie、LocalStorage</strong>：禁止跨域访问。</li>
+</ul>
+<h2 id="为什么要有跨域限制" line="23"><a href="#为什么要有跨域限制" class="header_no_underline" line="23">为什么要有跨域限制？</a></h2>
+<p line="24"><strong line="24">核心目的：安全性</strong>
+跨域限制是浏览器<strong line="25">同源策略</strong>的一部分，主要为了防止以下安全风险：</p>
+<ol line="26">
+<li line="26"><strong line="26">CSRF（跨站请求伪造）</strong><br />
+恶意网站诱导用户发起跨域请求（如转账操作），盗用用户身份。</li>
+<li line="28"><strong line="28">XSS（跨站脚本攻击）</strong><br />
+攻击者窃取用户 Cookie 或敏感数据，通过跨域请求发送到自己的服务器。</li>
+<li line="30"><strong line="30">数据泄露</strong><br />
+阻止网站 A 未经授权读取网站 B 的私有数据（如用户信息）。</li>
+</ol>
+<p line="33">试想一下：</p>
+<ul line="34">
+<li line="34">你登录银行网站 <code line="34">bank.com</code> 后，访问恶意网站 <code line="34">evil.com</code>。</li>
+<li line="35"><code line="35">evil.com</code> 的脚本可随意向 <code line="35">bank.com</code> 发起请求，窃取账户数据或执行转账操作。</li>
+<li line="36">仅仅只是看了一下余额你的钱就被转走了</li>
+</ul>
+<h2 id="jsonp" line="38"><a href="#jsonp" class="header_no_underline" line="38">JSONP</a></h2>
+<h3 id="客户端代码浏览器端" line="39"><a href="#客户端代码浏览器端" class="header_no_underline" line="39">客户端代码（浏览器端）</a></h3>
+<pre line="40"><code class="language-javascript" line="40">// 1. 定义回调函数
+function handleResponse(data) {
+  console.log(&quot;Received data:&quot;, data);
+}
+
+// 2. 动态创建 script 标签并设置 src
+const script = document.createElement(&quot;script&quot;);
+script.src = &quot;https://api.example.com/data?callback=handleResponse&quot;;
+document.body.appendChild(script);
+
+// 3. 脚本加载完成后自动执行 handleResponse(data)
+</code></pre>
+<h3 id="服务器端代码以-nodejs-为例" line="54"><a href="#服务器端代码以-nodejs-为例" class="header_no_underline" line="54">服务器端代码（以 Node.js 为例）</a></h3>
+<pre line="55"><code class="language-javascript" line="55">app.get(&quot;/data&quot;, (req, res) =&gt; {
+  const data = { message: &quot;Hello from server!&quot; };
+  const callbackName = req.query.callback; // 获取客户端传递的回调函数名
+  res.send(`\${callbackName}(\${JSON.stringify(data)})`);
+});
+</code></pre>
+<h2 id="cors跨域资源共享" line="63"><a href="#cors跨域资源共享" class="header_no_underline" line="63">CORS（跨域资源共享）</a></h2>
+<p line="64">现代浏览器推荐的跨域解决方案，需<strong line="64">服务器设置响应头</strong>授权。</p>
+<h3 id="客户端代码普通-ajax" line="66"><a href="#客户端代码普通-ajax" class="header_no_underline" line="66">客户端代码（普通 AJAX）</a></h3>
+<pre line="67"><code class="language-javascript" line="67">fetch('https://api.example.com/data', {
+  method: 'GET',
+  headers: { 'Content-Type': 'application/json' }
+})
+.then(response =&gt; response.json())
+.then(data =&gt; console.log(data));
+</code></pre>
+<h3 id="服务器端nodejs--express" line="76"><a href="#服务器端nodejs--express" class="header_no_underline" line="76">服务器端（Node.js + Express）</a></h3>
+<pre line="77"><code class="language-javascript" line="77">app.use((req, res, next) =&gt; {
+  // 允许所有域（生产环境应指定具体域名）
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // 允许的请求方法
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
+  // 允许的自定义头
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
+app.get('/data', (req, res) =&gt; {
+  res.json({ message: 'CORS enabled!' });
+});
+</code></pre>
+<h2 id="代理服务器" line="93"><a href="#代理服务器" class="header_no_underline" line="93">代理服务器</a></h2>
+<p line="94">通过同域服务器转发请求绕过浏览器限制。</p>
+<h3 id="前端代码" line="96"><a href="#前端代码" class="header_no_underline" line="96">前端代码</a></h3>
+<pre line="97"><code class="language-javascript" line="97">// 请求同域代理
+fetch('/proxy/api.example.com/data')
+.then(response =&gt; response.json())
+.then(data =&gt; console.log(data));
+</code></pre>
+<h3 id="nodejs-代理服务器" line="104"><a href="#nodejs-代理服务器" class="header_no_underline" line="104">Node.js 代理服务器</a></h3>
+<pre line="105"><code class="language-javascript" line="105">const http = require('http');
+const httpProxy = require('http-proxy');
+const proxy = httpProxy.createProxyServer({});
+
+http.createServer((req, res) =&gt; {
+  // 将 /proxy/xxx 转发到目标服务器
+  if (req.url.startsWith('/proxy')) {
+    const target = req.url.replace('/proxy/', 'https://');
+    proxy.web(req, res, { target });
+  }
+}).listen(3000);
+</code></pre>
+<hr line="119" />
+<h2 id="postmessage跨窗口通信" line="121"><a href="#postmessage跨窗口通信" class="header_no_underline" line="121">postMessage（跨窗口通信）</a></h2>
+<p line="122">不同窗口/iframe 间安全通信的 API。</p>
+<h3 id="主页面" line="124"><a href="#主页面" class="header_no_underline" line="124">主页面</a></h3>
+<pre line="125"><code class="language-html" line="125">&lt;iframe id=&quot;iframe&quot; src=&quot;https://other-domain.com&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;
+  const iframe = document.getElementById('iframe');
+  iframe.onload = () =&gt; {
+    // 向 iframe 发送消息
+    iframe.contentWindow.postMessage('Hello!', 'https://other-domain.com');
+  };
+
+  // 接收来自 iframe 的消息
+  window.addEventListener('message', (event) =&gt; {
+    if (event.origin === 'https://other-domain.com') {
+      console.log('Received:', event.data);
+    }
+  });
+&lt;/script&gt;
+</code></pre>
+<h3 id="iframe-内部" line="143"><a href="#iframe-内部" class="header_no_underline" line="143">iframe 内部</a></h3>
+<pre line="144"><code class="language-javascript" line="144">window.addEventListener('message', (event) =&gt; {
+  if (event.origin === 'https://main-domain.com') {
+    // 回复消息
+    event.source.postMessage('Hi back!', event.origin);
+  }
+});
+</code></pre>
+<h2 id="websocket" line="153"><a href="#websocket" class="header_no_underline" line="153">WebSocket</a></h2>
+<p line="154">WebSocket 协议默认允许跨域通信。</p>
+<h3 id="客户端" line="156"><a href="#客户端" class="header_no_underline" line="156">客户端</a></h3>
+<pre line="157"><code class="language-javascript" line="157">const socket = new WebSocket('wss://api.example.com/socket');
+
+socket.onopen = () =&gt; {
+  socket.send('Connected!');
+};
+
+socket.onmessage = (event) =&gt; {
+  console.log('Message:', event.data);
+};
+</code></pre>
+<h3 id="服务器端nodejs--ws" line="169"><a href="#服务器端nodejs--ws" class="header_no_underline" line="169">服务器端（Node.js + ws）</a></h3>
+<pre line="170"><code class="language-javascript" line="170">const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on('connection', (ws) =&gt; {
+  ws.on('message', (message) =&gt; {
+    ws.send('Echo: ' + message);
+  });
+});
+</code></pre>
+<h2 id="nginx-反向代理" line="181"><a href="#nginx-反向代理" class="header_no_underline" line="181">Nginx 反向代理</a></h2>
+<p line="182">通过 Nginx 配置转发请求。</p>
+<h3 id="nginx-配置" line="184"><a href="#nginx-配置" class="header_no_underline" line="184">Nginx 配置</a></h3>
+<pre line="185"><code class="language-nginx" line="185">server {
+  listen 80;
+  server_name localhost;
+
+  location /api/ {
+    proxy_pass https://api.example.com/;
+    add_header Access-Control-Allow-Origin *;
+  }
+}
+</code></pre>
+<h2 id="各方案对比" line="197"><a href="#各方案对比" class="header_no_underline" line="197">各方案对比</a></h2>
+<table line="198">
+<thead line="198">
+<tr line="198"><th line="198">方案</th><th line="198">适用场景</th><th line="198">优点</th><th line="198">缺点</th></tr>
+</thead>
+<tbody line="200">
+<tr line="200"><td line="200"><strong line="200">CORS</strong></td><td line="200">现代浏览器 API 调用</td><td line="200">标准化、安全性高</td><td line="200">需服务器支持</td></tr>
+<tr line="201"><td line="201"><strong line="201">JSONP</strong></td><td line="201">老旧浏览器兼容性需求</td><td line="201">兼容性好</td><td line="201">仅 GET、安全性风险</td></tr>
+<tr line="202"><td line="202"><strong line="202">代理</strong></td><td line="202">无法修改服务器头的场景</td><td line="202">隐藏真实请求地址</td><td line="202">需要额外服务器资源</td></tr>
+<tr line="203"><td line="203"><strong line="203">postMessage</strong></td><td line="203">跨窗口/iframe 通信</td><td line="203">安全可控</td><td line="203">仅限窗口间通信</td></tr>
+<tr line="204"><td line="204"><strong line="204">WebSocket</strong></td><td line="204">实时双向通信</td><td line="204">原生跨域支持</td><td line="204">协议复杂度高</td></tr>
+</tbody>
+</table>
+<p line="206">根据实际需求选择最合适的跨域方案。</p>
+
+
+<!-- USER DOCUMENT CONTENT END -->
+
+</body></html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang='zh'><meta charset="UTF-8"><head><style type='text/css'>html,body{padding:4px 8px 4px 8px;font-family:'customfont';}h1,h2,h3,h4,h5,h6{font-family:'sans-serif-condensed';}a{color: #388E3C;text-decoration:underline;}img{height:auto;max-width:100%;max-height: 90vh;margin:auto;}html,body{color:#303030;}blockquote{color:#73747d;}</style><style>video, img { max-width: 100%; } pre { max-width: 100%; overflow: auto; } table, th, td {  border: 1px solid black; border-collapse: collapse; border-spacing: 0; padding: 6px; } .floatl {float: left;} .clear {clear:both;} button:hover,button:active {filter: invert(1);} button { display: inline-block; box-sizing: border-box; border: none; border-radius: 4px; padding: 0 16px; min-width: 64px; height: 36px; font-family: 'Roboto'; font-size: 14px; font-weight: 500;  line-height: 36px; overflow: hidden; outline: none; vertical-align: middle; text-align: center; text-overflow: ellipsis; text-transform: uppercase; box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); margin: 4px 4px 8px 0px;}    .emojibtn,.fa {font-size:250%; background: transparent; padding: 0px; min-width:0px;}    .sticky {position: sticky; display: inline-block; border: 0px solid black;} body{margin:0;padding:0.5vh 3.5vw} .header_no_underline { text-decoration: none; color: black; } h1 < a.header_no_underline { border-bottom: 2px solid #eaecef; }  h1,h2 { border-bottom: 2px solid #696969; } blockquote{padding:0px 14px;border-left:3.5px solid #dddddd;margin:4px 0}.video-container > p { margin: 0; }.task-list-item { list-style-type:none; text-indent: -1.4em; } li.task-list-item > pre, li.task-list-item > ul > li { text-indent: 0pt; }p > a { word-break:break-all; }span.delimiter::before { content: ', '; } .front-matter-container { margin-bottom: 1.5em; border-bottom: 2px solid black; } .front-matter-item { text-align: right; margin-bottom: 0.25em; } .front-matter-container-title { font-weight: bold; font-size: 110%; } .front-matter-container-tags { white-space: pre; overflow: scroll; font-size: 80%; } div.front-matter-item > .post-item-tags { padding: 0.1em 0.4em; border-radius: 50rem; background-color: #dee2e6; } div.front-matter-item > span.post-item-tags:not(:first-child) { margin-left: 0.25em; } div.front-matter-item > span.post-delimiter-tags::before { content: ' '; }.markor-table-of-contents { border: 1px solid black; border-radius: 2px; } .markor-table-of-contents > h1 { padding-left: 14px; margin-bottom: -8px; border-bottom: 1px solid black; } .markor-table-of-contents-list li { margin-left: -12px; } .markor-table-of-contents-list a { text-decoration: none; }</style><link rel='stylesheet' href='../prism/themes/prism.min.css'/><link rel='stylesheet' href='../prism/prism-markor.css'/><link rel='stylesheet' href='../prism/plugins/toolbar/prism-toolbar.css'/><script src='../prism/prism.js'></script><script src='../prism/components.js'></script><script src='../prism/prism-markor.js'></script><script src='../prism/plugins/autoloader/prism-autoloader.min.js'></script><script src='../prism/plugins/toolbar/prism-toolbar.min.js'></script><script src='../prism/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js'></script><style> 
+html, body { 
+/* 
+font-family: sans-serif-condensed; 
+font-size: 80%; 
+*/ 
+} 
+</style> 
+ 
+<script type="text/javascript"> 
+function onPageLoaded() { 
+/* 
+if ('format-markdown fileext-md' == 'MarkdownTextConverter') { 
+ window.scrollTo(0, document.body.scrollHeight); 
+} 
+*/ 
+} 
+</script><script> function onPageLoaded_markor_private() {
+usePrismCodeBlock();wrapCodeBlockWords();
+onPageLoaded(); }
+</script><style type='text/css'>@font-face { font-family: customfont; src: url('../fonts/Liberation Sans (Arial).ttf'); }</style></head>
+<body class='format-markdown fileext-md' onload='onPageLoaded_markor_private();'>
+
+<!-- USER DOCUMENT CONTENT -->
+
+
+<div class='front-matter-container'><div class='front-matter-item front-matter-container-title'><span class='post-item-title'>使用Netlify+Hexo+Github零成本搭建个人博客</span>
+</div>
+<div class='front-matter-item front-matter-container-tags'><span class='post-item-tags'>Netlify</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>Hexo</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>免费博客</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>minimalism</span>
+</div>
+<div class='front-matter-item front-matter-container-date'><span class='post-item-date'>2025-03-02 18:09:09</span>
+</div>
+</div>
+<p line="10">最近把博客重新搬运到了Hexo上，使用Github作为储存，Netlify自动构建搭建的全新博客，评论系统还在努力适配。
+网上有很多用Vercel+Hexo搭建博客的文章，这些都很不错，但是Vercel实在是太慢了，即使它有中国大陆优化节点，但还是太慢了，于是我就打算使用Netlify作为工作流来部署博客，将博客源文件存于Github，更新文章也只需要推送文章到Github仓库，还不用写Github Action配置文件，速度还比Github Pages快，嘎嘎好用。</p>
+<h2 id="准备工作" line="13"><a href="#准备工作" class="header_no_underline" line="13">准备工作</a></h2>
+<p line="15">在正式开始之前，你需要具备以下条件：</p>
+<ul line="16">
+<li line="16">一个Github账号 一个Netlify账号</li>
+<li line="17">对Github、Netlify操作有一个基本概念</li>
+<li line="18">一双手 一个脑子 一台能上网的设备</li>
+</ul>
+<p line="20">不会注册Github账号和不熟悉Github基本操作的，等我下一篇文章 下一篇文章就更新
+还有就是我了解到很多人注册不了Netlify账号，不过目前我没遇到，这里还是推荐使用QQ邮箱注册Netlify账号</p>
+<h2 id="初始化一个hexo博客并推送到github" line="23"><a href="#初始化一个hexo博客并推送到github" class="header_no_underline" line="23">初始化一个Hexo博客并推送到Github</a></h2>
+<p line="25"><strong line="25">如果你已经有了Hexo博客可以跳过这一步</strong>
+你需要先安装Nodejs和npm环境，因为Hexo是使用Nodejs开发的，Windows的Nodejs和npm可以去官网下载：<a href="https://nodejs.org/zh-cn/download" line="26">https://nodejs.org/zh-cn/download</a>
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/Screenshot_2025-03-02-16-49-37-81_a87fd7db6caa850b517aa6fa9d2fcd0e.jpg" alt="Nodejs官网下载界面使用" line="27" />
+点击Windows Installer (.msi)按钮开始下载，然后安装就行了。</p>
+<p line="30">Linux这边用Ubuntu做示范，打开Linux终端，运行如下指令：</p>
+<pre line="31"><code class="language-sh" line="31">apt install nodejs-lts
+</code></pre>
+<p line="35">安装完成之后使用<code line="35">npm -v</code>和<code line="35">node -v</code>验证是否安装成功，看到类似如下输出即安装成功，我这边是比较旧的版本，我这边更推荐使用node20+ npm10+：</p>
+<pre line="36"><code class="language-sh" line="36">root@localhost:~# node -v
+v18.19.1
+root@localhost:~# npm -v
+9.2.0
+</code></pre>
+<p line="42">安装完成之后需要先切换国内镜像源，运行如下命令将npm默认源换成淘宝源：</p>
+<pre line="43"><code class="language-sh" line="43">npm config set registry https://registry.npmmirror.com
+</code></pre>
+<p line="46">执行完这个命令后，所有通过npm下载的包都会从淘宝镜像源获取。你可以通过以下命令确认是否切换成功：</p>
+<pre line="47"><code class="language-sh" line="47">npm config get registry
+</code></pre>
+<p line="50">如果返回<code line="50">https://registry.npmmirror.com</code>，说明配置成功。</p>
+<p line="52">接下来开始安装<code line="52">hexo-cli</code>，运行如下命令安装<code line="52">hexo-cli</code></p>
+<pre line="53"><code class="language-sh" line="53">npm install -g hexo-cli
+</code></pre>
+<p line="56">安装完成之后，使用<code line="56">hexo-cli</code>初始化一个hexo博客模板：</p>
+<pre line="57"><code class="language-sh" line="57"># 初始化一个为myblog的博客
+hexo-cli init myblog
+# 进入项目文件夹
+cd myblog
+# 安装依赖
+npm install
+</code></pre>
+<p line="66">到这里 你就已经成功初始化了一个Hexo博客了 这里推荐一款主题，它就是<strong line="66">minimalism</strong>，我站在使用的就是这款主题 也是非常好看，项目地址：<a href="https://github.com/f-dong/hexo-theme-minimalism" line="66">https://github.com/f-dong/hexo-theme-minimalism</a>
+同时再推荐一款插件，RSS插件，<strong line="67">hexo-generator-feed</strong>，使用如下指令安装这个插件：</p>
+<pre line="68"><code class="language-sh" line="68">npm install hexo-generator-feed --save
+</code></pre>
+<p line="71">Hexo配置文件<code line="71">_config.yml</code>里面写入如下内容 可以按需修改：</p>
+<pre line="72"><code class="language-yaml" line="72">feed:
+  type: 
+    - rss2
+  path: 
+    - rss2.xml
+  limit: 30
+  hub:
+  content:
+  content_limit: 160
+  content_limit_delim: ' '
+  order_by: -date
+</code></pre>
+<p line="86">接下来去Github新建一个仓库，打开Github，点击New按钮：
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/IMG_20250302_172731.jpg" alt="Github主页截图" line="87" />
+<code line="88">Repository name</code>是仓库名，可以随便写，这里推荐用<code line="88">Hexo-Scoure</code>，这样看起来好看而且还适合快速寻找，<code line="88">Description</code>是仓库简介，可以留空，按自己要求来写就好了，仓库标记为public仓库，以免出现其他意外。
+接下来再本地链接你的仓库，然后新建一个<code line="89">.gitignore</code>文件里面写：</p>
+<pre line="90"><code class="language-.gitignore" line="90">node_modules/
+db.json
+public/
+</code></pre>
+<p line="95">再新建一个<code line="95">netlify.toml</code>文件，里面写入：</p>
+<pre line="96"><code class="language-toml" line="96">[build]
+  command = &quot;npm run build&quot;
+  publish = &quot;public&quot;
+
+[build.environment]
+  NODE_VERSION = &quot;22&quot;  
+  NPM_VERSION = &quot;10&quot;    
+
+[dev]
+  command = &quot;hexo server&quot;  
+  publish = &quot;public&quot;       
+</code></pre>
+<p line="109">保存，然后依次执行如下指令以提交：</p>
+<pre line="110"><code class="language-sh" line="110"># 初始化仓库，一条一条执行
+git init    # 初始化项目
+git add .   # 添加所有文件到缓存区
+git commit -m &quot;first commit&quot; # 首次提交
+git branch -M main # 切换分支
+git remote add origin &lt;仓库地址&gt; # 添加远程仓库
+git push -u origin main # 推送文件
+</code></pre>
+<h2 id="将博客部署到netlify" line="120"><a href="#将博客部署到netlify" class="header_no_underline" line="120">将博客部署到Netlify</a></h2>
+<p line="121">登陆 Netlify 控制台，点击<code line="121">Add new site</code>按钮，选择<code line="121">Import an existing project</code>，再选择Github，授权后选择你新建的仓库，输入一个Site Name，这是<code line="121">*.netlify.app</code>域名前缀，推荐<code line="121">个人网名</code>。
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/Screenshot_2025-03-02-17-54-19-74_df198e732186825c8df26e3c5a10d7cd.jpg" alt="Netlify控制台截图" line="122" /></p>
+<p line="124">接下来就慢慢等待部署成功。</p>
+<h2 id="绑定自定义域名" line="126"><a href="#绑定自定义域名" class="header_no_underline" line="126">绑定自定义域名</a></h2>
+<p line="127">进入网站面板，点击<code line="127">Domain management</code>，添加一个新域名，然后把你的域名解析到它分配的<code line="127">*.netlify.app</code>，然后域名板块下方<code line="127">SSL/TLS certificate</code>面板部署SSL，把强制SSL打开。
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/Screenshot_2025-03-02-18-05-27-61_df198e732186825c8df26e3c5a10d7cd.jpg" alt="SSL/TLS certificate控制台面板" line="128" /></p>
+<p line="130">接下来访问你的域名即可。到这里你的博客就搭建成功了！</p>
+
+
+<!-- USER DOCUMENT CONTENT END -->
+
+</body></html>

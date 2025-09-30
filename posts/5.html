@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang='zh'><head><style type='text/css'>html,body{padding:4px 8px 4px 8px;font-family:'customfont';}h1,h2,h3,h4,h5,h6{font-family:'sans-serif-condensed';}a{color: #388E3C;text-decoration:underline;}img{height:auto;max-width:100%;max-height: 90vh;margin:auto;}html,body{color:#303030;}blockquote{color:#73747d;}</style><style>video, img { max-width: 100%; } pre { max-width: 100%; overflow: auto; } table, th, td {  border: 1px solid black; border-collapse: collapse; border-spacing: 0; padding: 6px; } .floatl {float: left;} .clear {clear:both;} button:hover,button:active {filter: invert(1);} button { display: inline-block; box-sizing: border-box; border: none; border-radius: 4px; padding: 0 16px; min-width: 64px; height: 36px; font-family: 'Roboto'; font-size: 14px; font-weight: 500;  line-height: 36px; overflow: hidden; outline: none; vertical-align: middle; text-align: center; text-overflow: ellipsis; text-transform: uppercase; box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); margin: 4px 4px 8px 0px;}    .emojibtn,.fa {font-size:250%; background: transparent; padding: 0px; min-width:0px;}    .sticky {position: sticky; display: inline-block; border: 0px solid black;} body{margin:0;padding:0.5vh 3.5vw} .header_no_underline { text-decoration: none; color: black; } h1 < a.header_no_underline { border-bottom: 2px solid #eaecef; }  h1,h2 { border-bottom: 2px solid #696969; } blockquote{padding:0px 14px;border-left:3.5px solid #dddddd;margin:4px 0}.video-container > p { margin: 0; }.task-list-item { list-style-type:none; text-indent: -1.4em; } li.task-list-item > pre, li.task-list-item > ul > li { text-indent: 0pt; }p > a { word-break:break-all; }span.delimiter::before { content: ', '; } .front-matter-container { margin-bottom: 1.5em; border-bottom: 2px solid black; } .front-matter-item { text-align: right; margin-bottom: 0.25em; } .front-matter-container-title { font-weight: bold; font-size: 110%; } .front-matter-container-tags { white-space: pre; overflow: scroll; font-size: 80%; } div.front-matter-item > .post-item-tags { padding: 0.1em 0.4em; border-radius: 50rem; background-color: #dee2e6; } div.front-matter-item > span.post-item-tags:not(:first-child) { margin-left: 0.25em; } div.front-matter-item > span.post-delimiter-tags::before { content: ' '; }.markor-table-of-contents { border: 1px solid black; border-radius: 2px; } .markor-table-of-contents > h1 { padding-left: 14px; margin-bottom: -8px; border-bottom: 1px solid black; } .markor-table-of-contents-list li { margin-left: -12px; } .markor-table-of-contents-list a { text-decoration: none; }</style><link rel='stylesheet' href='../prism/themes/prism.min.css'/><link rel='stylesheet' href='../prism/prism-markor.css'/><link rel='stylesheet' href='../prism/plugins/toolbar/prism-toolbar.css'/><script src='../prism/prism.js'></script><script src='../prism/components.js'></script><script src='../prism/prism-markor.js'></script><script src='../prism/plugins/autoloader/prism-autoloader.min.js'></script><script src='../prism/plugins/toolbar/prism-toolbar.min.js'></script><script src='../prism/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js'></script><style> 
+html, body { 
+/* 
+font-family: sans-serif-condensed; 
+font-size: 80%; 
+*/ 
+} 
+</style> 
+ 
+<script type="text/javascript"> 
+function onPageLoaded() { 
+/* 
+if ('format-markdown fileext-md' == 'MarkdownTextConverter') { 
+ window.scrollTo(0, document.body.scrollHeight); 
+} 
+*/ 
+} 
+</script><script> function onPageLoaded_markor_private() {
+usePrismCodeBlock();wrapCodeBlockWords();
+onPageLoaded(); }
+</script><style type='text/css'>@font-face { font-family: customfont; src: url('../fonts/Liberation Sans (Arial).ttf'); }</style></head>
+<body class='format-markdown fileext-md' onload='onPageLoaded_markor_private();'>
+
+<!-- USER DOCUMENT CONTENT -->
+
+
+<div class='front-matter-container'><div class='front-matter-item front-matter-container-title'><span class='post-item-title'>在旧Andriod设备上本地化部署Qwen-1.5-0.5B开源模型</span>
+</div>
+<div class='front-matter-item front-matter-container-tags'><span class='post-item-tags'>Qwen</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>本地部署AI</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>DeepSeek</span>
+</div>
+<div class='front-matter-item front-matter-container-date'><span class='post-item-date'>2025-03-20 12:28:31</span>
+</div>
+</div>
+<p line="10">最近各种大模型的爆火，网上出现了大量的DeepSeek-R1大模型部署教程，但网络上大部分教程都是针对Windows/LinuxPC等高性能PC端的本地化部署教程，很少有针对移动端如旧Andriod设备部署0.5B低参数大模型，我本人对Termux有一定使用经验，所以就一直想用Termux来部署这个<code line="10">Qwen-1.5-0.5B</code>开源大模型玩玩，但是一直没时间，最近有空了就来耍，顺带给各位出个教程 <del line="10">水一篇文章</del> ，那么本文就用我那台ViVO Y3+Termux来部署<code line="10">Qwen-1.5-0.5B</code>开源大模型同时给出教程和Q＆A。</p>
+<p line="12">Qwen1.5-0.5B-Chat-GGUF是一款基于Transformer架构的高效语言模型，支持多种模型尺寸，具备强大的人机对话能力，支持32K的上下文长度，多语言兼容。此模型在人类偏好上有显著提升，是自然语言处理领域的杰出成果。</p>
+<h2 id="材料准备" line="14"><a href="#材料准备" class="header_no_underline" line="14">材料准备</a></h2>
+<p line="15">在开始之前，你要确保你有</p>
+<ul line="16">
+<li line="16">一台安装了Termux的旧Andriod设备</li>
+<li line="17">脑子和手</li>
+</ul>
+<p line="19">同时你还需要有Termux基础使用经验，纯小白慎看。</p>
+<h2 id="初始化termux环境可选" line="21"><a href="#初始化termux环境可选" class="header_no_underline" line="21">初始化Termux环境（可选）</a></h2>
+<p line="22">先把Termux的PKG源换成国内的镜像源，这样可以加快下载速度同时可以避免因为网络问题下载失败。
+<strong line="23">清华源</strong></p>
+<pre line="24"><code class="language-sh" line="24">sed -i 's@^\(deb.*stable main\)\$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/termux-packages-24 stable main@' \$PREFIX/etc/apt/sources.list &amp;&amp; apt update &amp;&amp; apt upgrade
+</code></pre>
+<p line="28"><strong line="28">北京源</strong></p>
+<pre line="29"><code class="language-sh" line="29">sed -i 's@^\(deb.*stable main\)\$@#\1\ndeb https://mirrors.bfsu.edu.cn/termux/termux-packages-24 stable main@' \$PREFIX/etc/apt/sources.list &amp;&amp;apt update &amp;&amp; apt upgrade
+</code></pre>
+<p line="33">这里随便选一个就像，我这边就选清华源了。</p>
+<p line="35">切换源过程中会遇到这个
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/IMG20250320090021.jpg" alt="选项1" line="36" />
+输入Y并回车继续这其实就是再问你是否需要确定安装。</p>
+<p line="39">接下来遇到这五个选项全部直接回车不用选择，默认为N
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/IMG20250320090512.jpg" alt="IMG20250320090512.jpg" line="40" />
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/IMG20250320090503.jpg" alt="IMG20250320090503.jpg" line="41" />
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/IMG20250320090451.jpg" alt="IMG20250320090451.jpg" line="42" />
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/IMG20250320090438.jpg" alt="IMG20250320090438.jpg" line="43" />
+<img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/IMG20250320090404.jpg" alt="IMG20250320090404.jpg" line="44" /></p>
+<p line="46">好的你已经完成了pkg软件源的切换和软件包列表更新，那么接下来就使用这条指令安装必要的软件包和工具：</p>
+<pre line="47"><code class="language-sh" line="47">pkg install git cmake make python clang libandroid-execinfo git-lfs
+</code></pre>
+<p line="50"><img src="https://cdn.mengze.vip/gh/JanePHPDev/Blog-Static-Resource@main/images/IMG20250320091121.jpg" alt="IMG20250320091121.jpg" line="50" />
+输入Y并回车继续这其实就是再问你是否需要确定安装。</p>
+<h2 id="克隆并编译llamacpp" line="53"><a href="#克隆并编译llamacpp" class="header_no_underline" line="53">克隆并编译llama.cpp</a></h2>
+<p line="54">使用如下指令克隆llama仓库并进入文件夹：</p>
+<pre line="55"><code class="language-sh" line="55">git clone https://github.com/ggerganov/llama.cpp #克隆仓库
+cd llama.cpp #进入文件夹
+</code></pre>
+<p line="59">使用Cmake对llama.cpp进行编译</p>
+<pre line="60"><code class="language-sh" line="60">make -j4
+</code></pre>
+<p line="63">这里的 -j4 表示使用4个线程进行编译，可根据设备的CPU核心数调整，理论上线程越多编译越快。</p>
+<p line="65">编译过程中我遇到了新的问题，我找到了解决方案，如果你也遇到这个问题 看这里解决
+这是因为llama.cpp项目已经弃用了旧的Makefile构建方式，现在推荐使用CMake构建。
+先新建一个build目录，然后进入该目录</p>
+<pre line="68"><code class="language-sh" line="68">mkdir build
+cd build
+</code></pre>
+<p line="72">再使用如下命令来配置构建</p>
+<pre line="73"><code class="language-sh" line="73">cmake ..
+</code></pre>
+<p line="76">然后再使用这个命令进行编译</p>
+<pre line="77"><code class="language-sh" line="77">make -j4
+</code></pre>
+<p line="80">编译完成之后即可开始安装</p>
+<pre line="81"><code class="language-sh" line="81">make install
+</code></pre>
+<h2 id="下载并运行模型" line="85"><a href="#下载并运行模型" class="header_no_underline" line="85">下载并运行模型</a></h2>
+<p line="86">使用如下指令安装git-lfs</p>
+<pre line="87"><code class="language-sh" line="87">git lfs install
+</code></pre>
+<p line="91">然后运行这个指令下载<code line="91">Qwen-1.5-0.5B</code>开源大模型：</p>
+<pre line="92"><code class="language-sh" line="92">git clone https://gitcode.com/hf_mirrors/Qwen/Qwen1.5-0.5B-Chat-GGUF.git
+</code></pre>
+<p line="96">预计会下载4GB左右，下载过程比较慢，需耐心等待，确保网络保持通畅</p>
+<p line="98">完成下载之后也基本上完成了，接下来就可以运行<code line="98">Qwen-1.5-0.5B</code>开源大模型了，参考如下指令：</p>
+<pre line="100"><code class="language-sh" line="100">./main -m qwen1_5-0_5b-chat-q8_0.gguf -n 512 --color -i -cml -f prompts/chat-with-qwen.txt
+</code></pre>
+<p line="104">然后就是我使用的工具是llama.cpp，如果你用不了也可以使用huggingface-cli，使用如下指令：</p>
+<pre line="105"><code class="language-sh" line="105">pip install huggingface_hub
+</code></pre>
+<p line="109">安装好之后可以使用这一串指令下载并运行模型</p>
+<pre line="110"><code class="language-sh" line="110">huggingface-cli download Qwen/Qwen1.5-0.5B-Chat-GGUF qwen1_5-0_5b-chat-q8_0.gguf --local-dir . --local-dir-use-symlinks False
+</code></pre>
+
+
+<!-- USER DOCUMENT CONTENT END -->
+
+</body></html>

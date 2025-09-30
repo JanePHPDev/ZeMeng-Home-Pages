@@ -1,13 +1,289 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>梦泽个人主页</title>
-  </head>
-  <body>
-    <div id="app" class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JanePHPDev - 个人主页</title>
+
+  <!-- 样式依赖 -->
+  <link href="cdn_modules/bootstrap@5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.mengze.vip/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+
+  <!-- 自定义样式 -->
+  <style>
+    :root{--theme:#6c7fd8;}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:#fff;color:#3b4252;}
+    .navbar{background:var(--theme);}
+    .navbar-brand,.navbar-nav .nav-link{color:#fff!important;}
+    .navbar-nav .nav-link:hover{opacity:.8;}
+    @media (min-width: 992px){
+      .navbar-nav{flex-direction: row;}
+      .navbar-toggler{display:none;}
+    }
+    #tech-stack .card{transition:.3s;}
+    #tech-stack .card:hover{transform:translateY(-4px);}
+    .progress{height:6px;font-size:0;}
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(120% 120% at 20% 20%,rgba(255,0,153,.25),transparent 50%),radial-gradient(100% 100% at 80% 70%,rgba(33,150,243,.25),transparent 50%),#fff;}
+    .avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--theme);}
+    .name{margin-top:1rem;font-size:2.2rem;font-weight:600;}
+    .bio{margin-top:.5rem;color:#666;max-width:600px;margin-left:auto;margin-right:auto;}
+    .social{margin-top:2rem;}
+    .social a{color:var(--theme);font-size:1.5rem;margin:0 .6rem;transition:.3s;}
+    .social a:hover{opacity:.7;}
+    .section-title{position:relative;margin-bottom:2rem;text-align:center;font-weight:600;font-size:1.6rem;}
+    .section-title:after{content:"";width:60px;height:3px;background:var(--theme);position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);}
+    footer{background:#f5f5f5;text-align:center;padding:2rem 0;font-size:.9rem;color:#777;}
+  </style>
+</head>
+<body>
+
+<!-- ===== 顶部导航（PC 端直接平铺） ===== -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">JanePHPDev 梦泽</a>
+    <!-- 小屏依旧保留汉堡按钮，大屏隐藏 -->
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="post.html">文章列表</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/JanePHPDev" target="_blank"><i class="fa fa-github">｜</i>JanePHPDev(梦泽)</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://qm.qq.com/q/zQjuUYuWJy" target="_blank"><i class="fa fa-qq">｜</i>技术支持、泽</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:you@example.com"><i class="fa fa-envelope">｜</i>master@zeapi.ink</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== 首屏 ===== -->
+<section class="hero">
+  <div>
+    <img src="http://q2.qlogo.cn/headimg_dl?dst_uin=417158478&spec=640" class="avatar" alt="avatar">
+    <div class="name">JanePHPDev</div>
+    <div class="bio">PHP/Vue3全栈，热衷于公益事业，喜欢咖啡</div>
+    <div class="social">
+      <a href="https://github.com/JanePHPDev" target="_blank" title="GitHub"><i class="fa fa-github"></i></a>
+      <a href="https://qm.qq.com/q/zQjuUYuWJy" target="_blank" title="qq"><i class="fa fa-qq"></i></a>
+      <a href="mailto:master@zeapi.ink" title="Email"><i class="fa fa-envelope"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 个人简介 ===== -->
+<section id="about" class="py-5">
+  <div class="container" style="max-width:700px">
+    <h3 class="section-title">关于我</h3>
+    <p class="text-muted">
+      <img src="https://skillicons.dev/icons?i=html,css,js,vscode,php,nginx,python,golang,aws,gcp,azure,vue,nodejs,git,docker,vim&theme=light&perline=8" width="100%"/><br/><br/>
+      梦泽，一名来自中国湖南的全栈工程师，自2023年起系统性地完成了从前端到后端、从视觉到基础设施的完整技术栈构建：在表现层，他先后掌握了HTML、Bootstrap、Vue及其周边生态；在逻辑层，熟练运用JavaScript、PHP、Node.js进行高并发与业务解耦开发；在样式层，可自如切换CSS、SCSS、Stylus，兼顾可维护性与性能；在运维与交付层，深度实践虚拟化、云原生、Docker与Serverless架构，能够独立完成持续集成、持续交付及多云资源成本控制。
+
+过去两年间，他持续以项目驱动的方式验证技术方案：搭建过博客、网床、图床、Git仓库等基础服务，也运营过内容聚合与资源分发平台，累计迭代6个自有域名，始终将“可折腾性”置于流量与权重之上。对梦泽而言，代码不仅是交付物，更是理解世界、优化世界的一条路径；他热衷用技术解决真实场景中的效率与成本问题，并乐于将过程沉淀为可复用的开源作品与最佳实践。</p>
+  </div>
+</section>
+
+<!-- ===== 新增：技术栈卡片 ===== -->
+<section id="tech-stack" class="py-5 bg-light">
+  <div class="container">
+    <h3 class="section-title">技术栈</h3>
+    <div class="row g-4">
+      <!-- PHP -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">PHP</h6>
+            <small class="text-muted">服务端老牌脚本</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-success" style="width:100%"></div>
+            </div>
+            <small class="text-success">精通</small>
+          </div>
+        </div>
+      </div>
+      <!-- Vue3 -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">Vue3</h6>
+            <small class="text-muted">渐进式前端框架</small>
+            <div class="progress mt-2">
+              <div class="progress-bar" style="width:65%;background:var(--theme)"></div>
+            </div>
+            <small class="text-primary">半精通</small>
+          </div>
+        </div>
+      </div>
+      <!-- Nodejs -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">Nodejs</h6>
+            <small class="text-muted">JS 运行时</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-warning" style="width:50%"></div>
+            </div>
+            <small class="text-warning">会用</small>
+          </div>
+        </div>
+      </div>
+      <!-- Go -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">Go</h6>
+            <small class="text-muted">云原生利器</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-info" style="width:40%"></div>
+            </div>
+            <small class="text-info">看文档会用</small>
+          </div>
+        </div>
+      </div>
+      <!-- C -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">C</h6>
+            <small class="text-muted">系统级语言</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-secondary" style="width:30%"></div>
+            </div>
+            <small class="text-secondary">勉强</small>
+          </div>
+        </div>
+      </div>
+      <!-- Stylus -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">Stylus</h6>
+            <small class="text-muted">CSS 预处理器</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-success" style="width:100%"></div>
+            </div>
+            <small class="text-success">精通</small>
+          </div>
+        </div>
+      </div>
+      <!-- SCSS -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">SCSS</h6>
+            <small class="text-muted">CSS 超集</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-info" style="width:40%"></div>
+            </div>
+            <small class="text-info">看文档会用</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GitHub 置顶仓库 ===== -->
+<section id="repos" class="py-5">
+  <div class="container">
+    <h3 class="section-title">置顶仓库</h3>
+    <p class="text-muted"><b>我的项目是作品，不是产品。  
+除非我在自述文件里明确写下“它是公开的，可贡献的”，否则，它们始终处于：可用、可商用、可Fork、可Issue，但不可贡献的状态。  
+任何人可以以任意方式使用、修改或分发我的项目——前提是遵守对应的开源协议，但请不要提交拉取请求。这不是开源的标准做法，但这是我选择的方式。</b></p>
+    <div class="row g-4" id="pin-container">
+      <div class="col-12 text-center">
+        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">加载中…</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 置顶 Gists ===== -->
+<section id="gists" class="py-5 bg-light">
+  <div class="container" style="max-width:800px">
+    <h3 class="section-title">置顶 Gists</h3>
+        <p class="text-muted">这些是我在Gists是挑选的，具有观赏性或比较著名的代码片段</p>
+    <div class="gist-script mb-4"><script src="https://proxy.mengze.vip/proxy/https://gist.github.com/JanePHPDev/d6caf52fedf8e16f6017d83f12a0f6bf.js"></script></div>
+    <div class="gist-script mb-4"><script src="https://proxy.mengze.vip/proxy/https://gist.github.com/JanePHPDev/1685b3163d5eaa4f2c93c08be44c5ad3.js"></script></div>
+    <div class="gist-script mb-4"><script src="https://proxy.mengze.vip/proxy/https://gist.github.com/JanePHPDev/f7a63e4b40250faea42826046b8453a8.js"></script></div>
+  </div>
+</section>
+
+<footer>
+  © 2025 JanePHPDev · Powered by <a href="https://netlify.com" target="_blank" class="text-muted">Netlify</a>
+</footer>
+
+<!-- 脚本依赖 -->
+<script type="text/javascript" src="cdn_modules/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
+<!-- 置顶仓库拉取逻辑（保持原样） -->
+<script>
+const GITHUB_LOGIN = 'JanePHPDev';
+const GITHUB_TOKEN = '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';
+const query = `
+query($login: String!) {
+  user(login: $login) {
+    pinnedItems(first: 4, types: REPOSITORY) {
+      nodes {
+        ... on Repository {
+          name
+          description
+          url
+          stargazerCount
+          forkCount
+          primaryLanguage { name color }
+        }
+      }
+    }
+  }
+}`;
+async function fetchPinnedRepos() {
+  const res = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(GITHUB_TOKEN && { Authorization: `bearer ${GITHUB_TOKEN}` })
+    },
+    body: JSON.stringify({ query, variables: { login: GITHUB_LOGIN } })
+  });
+  if (!res.ok) throw new Error(`GraphQL error: ${res.status}`);
+  const { data } = await res.json();
+  return data.user.pinnedItems.nodes;
+}
+function card(repo) {
+  const lang = repo.primaryLanguage || { name: 'Unknown', color: '#ccc' };
+  return `
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="${repo.url}" target="_blank" class="text-decoration-none">
+              <i class="fa fa-github"></i> ${repo.name}
+            </a>
+          </h5>
+          <p class="card-text text-muted small">${repo.description || '暂无描述'}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="badge" style="background:${lang.color};color:#fff">${lang.name}</span>
+            <div>
+              <span class="text-muted me-2"><i class="fa fa-star"></i> ${repo.stargazerCount}</span>
+              <span class="text-muted"><i class="fa fa-code-fork"></i> ${repo.forkCount}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+document.addEventListener('DOMContentLoaded', () =>
+  fetchPinnedRepos()
+    .then(list => {
+      const container = document.getElementById('pin-container');
+      container.innerHTML = list.length ? list.map(card).join('')
+                                        : '<div class="col-12 text-center text-muted">暂无置顶仓库</div>';
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById('pin-container').innerHTML =
+        '<div class="col-12 text-center text-danger">加载失败，请稍后重试</div>';
+    })
+);
+</script>
+</body>
 </html>

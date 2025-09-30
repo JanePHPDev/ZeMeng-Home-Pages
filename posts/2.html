@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang='zh'><head><style type='text/css'>html,body{padding:4px 8px 4px 8px;font-family:'customfont';}h1,h2,h3,h4,h5,h6{font-family:'sans-serif-condensed';}a{color: #388E3C;text-decoration:underline;}img{height:auto;max-width:100%;max-height: 90vh;margin:auto;}html,body{color:#303030;}blockquote{color:#73747d;}</style><style>video, img { max-width: 100%; } pre { max-width: 100%; overflow: auto; } table, th, td {  border: 1px solid black; border-collapse: collapse; border-spacing: 0; padding: 6px; } .floatl {float: left;} .clear {clear:both;} button:hover,button:active {filter: invert(1);} button { display: inline-block; box-sizing: border-box; border: none; border-radius: 4px; padding: 0 16px; min-width: 64px; height: 36px; font-family: 'Roboto'; font-size: 14px; font-weight: 500;  line-height: 36px; overflow: hidden; outline: none; vertical-align: middle; text-align: center; text-overflow: ellipsis; text-transform: uppercase; box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); margin: 4px 4px 8px 0px;}    .emojibtn,.fa {font-size:250%; background: transparent; padding: 0px; min-width:0px;}    .sticky {position: sticky; display: inline-block; border: 0px solid black;} body{margin:0;padding:0.5vh 3.5vw} .header_no_underline { text-decoration: none; color: black; } h1 < a.header_no_underline { border-bottom: 2px solid #eaecef; }  h1,h2 { border-bottom: 2px solid #696969; } blockquote{padding:0px 14px;border-left:3.5px solid #dddddd;margin:4px 0}.video-container > p { margin: 0; }.task-list-item { list-style-type:none; text-indent: -1.4em; } li.task-list-item > pre, li.task-list-item > ul > li { text-indent: 0pt; }p > a { word-break:break-all; }span.delimiter::before { content: ', '; } .front-matter-container { margin-bottom: 1.5em; border-bottom: 2px solid black; } .front-matter-item { text-align: right; margin-bottom: 0.25em; } .front-matter-container-title { font-weight: bold; font-size: 110%; } .front-matter-container-tags { white-space: pre; overflow: scroll; font-size: 80%; } div.front-matter-item > .post-item-tags { padding: 0.1em 0.4em; border-radius: 50rem; background-color: #dee2e6; } div.front-matter-item > span.post-item-tags:not(:first-child) { margin-left: 0.25em; } div.front-matter-item > span.post-delimiter-tags::before { content: ' '; }.markor-table-of-contents { border: 1px solid black; border-radius: 2px; } .markor-table-of-contents > h1 { padding-left: 14px; margin-bottom: -8px; border-bottom: 1px solid black; } .markor-table-of-contents-list li { margin-left: -12px; } .markor-table-of-contents-list a { text-decoration: none; }</style><link rel='stylesheet' href='../prism/themes/prism.min.css'/><link rel='stylesheet' href='../prism/prism-markor.css'/><link rel='stylesheet' href='../prism/plugins/toolbar/prism-toolbar.css'/><script src='../prism/prism.js'></script><script src='../prism/components.js'></script><script src='../prism/prism-markor.js'></script><script src='../prism/plugins/autoloader/prism-autoloader.min.js'></script><script src='../prism/plugins/toolbar/prism-toolbar.min.js'></script><script src='../prism/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js'></script><style> 
+html, body { 
+/* 
+font-family: sans-serif-condensed; 
+font-size: 80%; 
+*/ 
+} 
+</style> 
+ 
+<script type="text/javascript"> 
+function onPageLoaded() { 
+/* 
+if ('format-markdown fileext-md' == 'MarkdownTextConverter') { 
+ window.scrollTo(0, document.body.scrollHeight); 
+} 
+*/ 
+} 
+</script><script> function onPageLoaded_markor_private() {
+usePrismCodeBlock();wrapCodeBlockWords();
+onPageLoaded(); }
+</script><style type='text/css'>@font-face { font-family: customfont; src: url('../fonts/Liberation Sans (Arial).ttf'); }</style></head>
+<body class='format-markdown fileext-md' onload='onPageLoaded_markor_private();'>
+
+<!-- USER DOCUMENT CONTENT -->
+
+
+<div class='front-matter-container'><div class='front-matter-item front-matter-container-title'><span class='post-item-title'>全网最全！JavaScript的20个语法糖</span>
+</div>
+<div class='front-matter-item front-matter-container-tags'><span class='post-item-tags'>JavaScript</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>语法糖</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>Syntactic Sugar</span><span class='post-delimiter-tags delimiter'></span><span class='post-item-tags'>箭头函数</span>
+</div>
+<div class='front-matter-item front-matter-container-date'><span class='post-item-date'>2025-03-02 09:19:28</span>
+</div>
+</div>
+<p line="11">语法糖（Syntactic Sugar）是由英国计算机学家 Peter J. Landin 提出的一个术语，指的是在编程语言中添加的某种语法，这种语法对语言的功能没有实质性影响，但能让代码更简洁、易读，提高开发效率。语法糖的本质是对已有语言结构的简化或包装。它不会增加新的功能，而是通过更直观的语法形式来替代复杂的底层实现。
+语法糖不全是优点，恰恰相反的是缺点可能比有点更多，但只针对特殊情况。
+某些语法糖可能会在底层自动进行类型转换，而开发者可能并不清楚这些转换的细节。在深层嵌套的代码中过度使用语法糖，可能会使代码的可读性下降。</p>
+<h3 id="1-箭头函数-arrow-functions" line="16"><a href="#1-箭头函数-arrow-functions" class="header_no_underline" line="16">1. 箭头函数 (Arrow Functions)</a></h3>
+<pre line="17"><code class="language-javascript" line="17">// 传统函数
+function add(a, b) { return a + b; }
+
+// 箭头函数简写
+const add = (a, b) =&gt; a + b;
+</code></pre>
+<p line="24">备注：箭头函数虽然简洁，但它不会创建自己的  this  上下文，而是绑定词法作用域内的  this  ，这可能会在某些情况下导致意外的行为
+箭头函数在高频调用时可能不如传统函数高效，而模板字符串在处理非常复杂的表达式时也可能不如传统的字符串拼接</p>
+<hr line="28" />
+<h3 id="2-解构赋值-destructuring" line="30"><a href="#2-解构赋值-destructuring" class="header_no_underline" line="30">2. 解构赋值 (Destructuring)</a></h3>
+<pre line="31"><code class="language-javascript" line="31">// 数组解构
+const [x, y] = [1, 2];
+
+// 对象解构
+const { name, age } = { name: 'Alice', age: 30 };
+
+// 函数参数解构
+function greet({ name }) {
+  return `Hello, \${name}!`;
+}
+</code></pre>
+<hr line="44" />
+<h3 id="3-模板字符串-template-literals" line="46"><a href="#3-模板字符串-template-literals" class="header_no_underline" line="46">3. 模板字符串 (Template Literals)</a></h3>
+<pre line="47"><code class="language-javascript" line="47">const name = 'Bob';
+console.log(`Hello, \${name}!`); // 自动替换变量
+</code></pre>
+<hr line="52" />
+<h3 id="4-对象属性简写" line="54"><a href="#4-对象属性简写" class="header_no_underline" line="54">4. 对象属性简写</a></h3>
+<pre line="55"><code class="language-javascript" line="55">const name = 'Charlie';
+const age = 25;
+
+// 传统写法
+const obj = { name: name, age: age };
+
+// 简写
+const obj = { name, age };
+</code></pre>
+<hr line="66" />
+<h3 id="5-方法简写-method-shorthand" line="68"><a href="#5-方法简写-method-shorthand" class="header_no_underline" line="68">5. 方法简写 (Method Shorthand)</a></h3>
+<pre line="69"><code class="language-javascript" line="69">// 传统写法
+const obj = {
+  sayHello: function() { /*...*/ }
+};
+
+// 简写
+const obj = {
+  sayHello() { /*...*/ }
+};
+</code></pre>
+<hr line="81" />
+<h3 id="6-默认参数-default-parameters" line="83"><a href="#6-默认参数-default-parameters" class="header_no_underline" line="83">6. 默认参数 (Default Parameters)</a></h3>
+<pre line="84"><code class="language-javascript" line="84">// 传统写法
+function multiply(a, b) {
+  b = b || 1;
+  return a * b;
+}
+
+// 简写
+function multiply(a, b = 1) {
+  return a * b;
+}
+</code></pre>
+<hr line="97" />
+<h3 id="7-展开运算符-spread-operator" line="99"><a href="#7-展开运算符-spread-operator" class="header_no_underline" line="99">7. 展开运算符 (Spread Operator)</a></h3>
+<pre line="100"><code class="language-javascript" line="100">// 数组合并
+const arr = [...[1,2], ...[3,4]];
+
+// 对象合并
+const merged = { ...obj1, ...obj2 };
+</code></pre>
+<hr line="108" />
+<h3 id="8-剩余参数-rest-parameters" line="110"><a href="#8-剩余参数-rest-parameters" class="header_no_underline" line="110">8. 剩余参数 (Rest Parameters)</a></h3>
+<pre line="111"><code class="language-javascript" line="111">function sum(...numbers) {
+  return numbers.reduce((a, b) =&gt; a + b);
+}
+</code></pre>
+<hr line="117" />
+<h3 id="9-可选链操作符-optional-chaining" line="119"><a href="#9-可选链操作符-optional-chaining" class="header_no_underline" line="119">9. 可选链操作符 (Optional Chaining)</a></h3>
+<pre line="120"><code class="language-javascript" line="120">// 传统写法
+const street = user &amp;&amp; user.address &amp;&amp; user.address.street;
+
+// 简写
+const street = user?.address?.street;
+</code></pre>
+<hr line="128" />
+<h3 id="10-空值合并运算符-nullish-coalescing" line="130"><a href="#10-空值合并运算符-nullish-coalescing" class="header_no_underline" line="130">10. 空值合并运算符 (Nullish Coalescing)</a></h3>
+<pre line="131"><code class="language-javascript" line="131">// 传统写法
+const value = input !== null &amp;&amp; input !== undefined ? input : 'default';
+
+// 简写
+const value = input ?? 'default';
+</code></pre>
+<hr line="139" />
+<h3 id="11-逻辑赋值运算符-logical-assignment" line="141"><a href="#11-逻辑赋值运算符-logical-assignment" class="header_no_underline" line="141">11. 逻辑赋值运算符 (Logical Assignment)</a></h3>
+<pre line="142"><code class="language-javascript" line="142">// 传统写法
+a = a || b;
+a = a &amp;&amp; b;
+a = a ?? b;
+
+// 简写
+a ||= b;
+a &amp;&amp;= b;
+a ??= b;
+</code></pre>
+<hr line="154" />
+<h3 id="12-类语法糖-class-syntax" line="156"><a href="#12-类语法糖-class-syntax" class="header_no_underline" line="156">12. 类语法糖 (Class Syntax)</a></h3>
+<pre line="157"><code class="language-javascript" line="157">// 构造函数原型写法
+function Person(name) {
+  this.name = name;
+}
+Person.prototype.sayHello = function() { /*...*/ };
+
+// 类语法糖
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayHello() { /*...*/ }
+}
+</code></pre>
+<p line="173">备注：class虽然让面向对象编程更直观，但类声明不会被提升，并且存在临时性死区（TDZ），这可能导致一些意外的错。</p>
+<hr line="175" />
+<h3 id="13-动态属性名" line="177"><a href="#13-动态属性名" class="header_no_underline" line="177">13. 动态属性名</a></h3>
+<pre line="178"><code class="language-javascript" line="178">const prop = 'age';
+const obj = {
+  [prop]: 30 // 等同于 age: 30
+};
+</code></pre>
+<hr line="185" />
+<h3 id="14-数组-includes-方法" line="187"><a href="#14-数组-includes-方法" class="header_no_underline" line="187">14. 数组 includes 方法</a></h3>
+<pre line="188"><code class="language-javascript" line="188">// 传统判断是否存在
+arr.indexOf('item') !== -1;
+
+// 简写
+arr.includes('item');
+</code></pre>
+<hr line="196" />
+<h3 id="15-指数运算符" line="198"><a href="#15-指数运算符" class="header_no_underline" line="198">15. 指数运算符</a></h3>
+<pre line="199"><code class="language-javascript" line="199">// 传统写法
+Math.pow(2, 3); // 8
+
+// 简写
+2 ** 3; // 8
+</code></pre>
+<hr line="207" />
+<h3 id="16-异步语法糖-asyncawait" line="209"><a href="#16-异步语法糖-asyncawait" class="header_no_underline" line="209">16. 异步语法糖 (async/await)</a></h3>
+<pre line="210"><code class="language-javascript" line="210">// Promise 链
+fetchData()
+  .then(res =&gt; process(res))
+  .catch(err =&gt; handleError(err));
+
+// async/await 简写
+async function handleData() {
+  try {
+    const res = await fetchData();
+    process(res);
+  } catch (err) {
+    handleError(err);
+  }
+}
+</code></pre>
+<hr line="227" />
+<h3 id="17-私有类字段" line="229"><a href="#17-私有类字段" class="header_no_underline" line="229">17. 私有类字段</a></h3>
+<pre line="230"><code class="language-javascript" line="230">class Counter {
+  #count = 0; // 私有字段
+
+  increment() {
+    this.#count++;
+  }
+}
+</code></pre>
+<hr line="240" />
+<h3 id="18-顶层-await" line="242"><a href="#18-顶层-await" class="header_no_underline" line="242">18. 顶层 await</a></h3>
+<pre line="243"><code class="language-javascript" line="243">// 模块中直接使用
+const data = await fetchData();
+</code></pre>
+<hr line="248" />
+<h3 id="19-数字分隔符" line="250"><a href="#19-数字分隔符" class="header_no_underline" line="250">19. 数字分隔符</a></h3>
+<pre line="251"><code class="language-javascript" line="251">const billion = 1_000_000_000; // 更易读
+</code></pre>
+<hr line="255" />
+<h3 id="20-标签函数-tagged-templates" line="257"><a href="#20-标签函数-tagged-templates" class="header_no_underline" line="257">20. 标签函数 (Tagged Templates)</a></h3>
+<pre line="258"><code class="language-javascript" line="258">function highlight(strings, ...values) {
+  // 自定义模板处理逻辑
+}
+
+const name = 'Alice';
+highlight`Hello \${name}!`;
+</code></pre>
+
+
+<!-- USER DOCUMENT CONTENT END -->
+
+</body></html>

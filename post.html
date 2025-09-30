@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>文章列表 - JanePHPDev</title>
+  <!-- 样式依赖 -->
+  <link href="cdn_modules/bootstrap@5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.mengze.vip/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+
+  <!-- 自定义样式 -->
+  <style>
+    :root{--theme:#6c7fd8;}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:#fff;color:#3b4252;}
+    .navbar{background:var(--theme);}
+    .navbar-brand,.navbar-nav .nav-link{color:#fff!important;}
+    .navbar-nav .nav-link:hover{opacity:.8;}
+    @media (min-width: 992px){
+      .navbar-nav{flex-direction: row;}
+      .navbar-toggler{display:none;}
+    }
+    .section-title{position:relative;margin-bottom:2rem;text-align:center;font-weight:600;font-size:1.6rem;}
+    .section-title:after{content:"";width:60px;height:3px;background:var(--theme);position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);}
+    footer{background:#f5f5f5;text-align:center;padding:2rem 0;font-size:.9rem;color:#777;}
+    .card-hover{transition:.3s;}
+    .card-hover:hover{transform:translateY(-4px);}
+    .random-img{height:200px;object-fit:cover;}
+    .author-info{background:#f8f9fa;border-radius:8px;padding:1.5rem;margin-bottom:2rem;}
+    .author-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--theme);}
+  </style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">JanePHPDev 梦泽</a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="post.html">文章列表</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/JanePHPDev" target="_blank"><i class="fa fa-github">｜</i>JanePHPDev(梦泽)</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://qm.qq.com/q/zQjuUYuWJy" target="_blank"><i class="fa fa-qq">｜</i>技术支持、泽</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:master@zeapi.ink"><i class="fa fa-envelope"></i>master@zeapi.ink</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- 主内容区 -->
+<div class="container" style="padding-top:100px;">
+  <div class="row">
+    <!-- 左侧栏作者信息 -->
+    <aside class="col-lg-3 mb-4">
+      <div class="author-info">
+        <img src="http://q2.qlogo.cn/headimg_dl?dst_uin=417158478&spec=640" class="author-avatar d-block mx-auto mb-3" alt="avatar">
+        <h5 class="text-center">JanePHPDev</h5>
+        <p class="text-muted text-center small">PHP/Vue3全栈，热衷于公益事业，喜欢咖啡</p>
+        <div class="text-center">
+          <a href="https://github.com/JanePHPDev" target="_blank" class="text-dark mx-2"><i class="fa fa-github"></i></a>
+          <a href="mailto:master@zeapi.ink" class="text-dark mx-2"><i class="fa fa-envelope"></i></a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 文章列表 -->
+    <main class="col-lg-9">
+      <h2 class="section-title">文章列表</h2>
+      <div id="posts-container" class="row g-4">
+        <div class="col-12 text-center">
+          <div class="spinner-border text-primary" role="status"><span class="visually-hidden">加载中…</span></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<footer>
+  © 2025 JanePHPDev · Powered by <a href="https://netlify.com" target="_blank" class="text-muted">Netlify</a>
+</footer>
+
+<!-- 脚本依赖 -->
+<script type="text/javascript" src="cdn_modules/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+// 随机图片生成
+function randomImg() {
+  const seed = Math.random().toString(36).slice(2);
+  return `https://picsum.photos/seed/${seed}/600/200`;
+}
+
+// 读取 data.json 并渲染
+fetch('data.json')
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('posts-container');
+    if (!data || !data.length) {
+      container.innerHTML = '<div class="col-12 text-muted text-center">暂无文章</div>';
+      return;
+    }
+    container.innerHTML = data.map(item => `
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100 card-hover">
+          <img src="${item.cover || randomImg()}" class="card-img-top random-img" alt="cover">
+          <div class="card-body">
+            <h5 class="card-title">${item.title}</h5>
+            <a href="${item.url}" class="btn btn-sm btn-outline-primary">阅读全文</a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  })
+  .catch(err => {
+    console.error(err);
+    document.getElementById('posts-container').innerHTML =
+      '<div class="col-12 text-danger text-center">加载失败，请稍后重试</div>';
+  });
+</script>
+</body>
+</html>
