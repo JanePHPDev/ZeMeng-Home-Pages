@@ -86,8 +86,7 @@
 <script>
 // 随机图片生成
 function randomImg() {
-  const seed = Math.random().toString(36).slice(2);
-  return `https://picsum.photos/seed/${seed}/600/200`;
+  return `https://api.dwo.cc/api/imgc`;
 }
 
 // 读取 data.json 并渲染
