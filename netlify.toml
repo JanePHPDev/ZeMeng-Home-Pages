@@ -1,0 +1,3 @@
+[build]
+  publish = "."          # 你的静态文件目录（一般是 . 或 dist）
+  functions = "netlify/functions"

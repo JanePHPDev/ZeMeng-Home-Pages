@@ -217,7 +217,6 @@
 <!-- 置顶仓库拉取逻辑（保持原样） -->
 <script>
 const GITHUB_LOGIN = 'JanePHPDev';
-const GITHUB_TOKEN = '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';
 const query = `
 query($login: String!) {
   user(login: $login) {
@@ -236,18 +235,11 @@ query($login: String!) {
   }
 }`;
 async function fetchPinnedRepos() {
-  const res = await fetch('https://proxy.mengze.vip/proxy/https://api.github.com/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(GITHUB_TOKEN && { Authorization: `bearer ${GITHUB_TOKEN}` })
-    },
-    body: JSON.stringify({ query, variables: { login: GITHUB_LOGIN } })
-  });
-  if (!res.ok) throw new Error(`GraphQL error: ${res.status}`);
-  const { data } = await res.json();
-  return data.user.pinnedItems.nodes;
+  const res = await fetch('/.netlify/functions/pinned-repos'); // 走自己的函数
+  if (!res.ok) throw new Error(`Backend error: ${res.status}`);
+  return res.json(); // 直接返回数组
 }
+
 function card(repo) {
   const lang = repo.primaryLanguage || { name: 'Unknown', color: '#ccc' };
   return `
