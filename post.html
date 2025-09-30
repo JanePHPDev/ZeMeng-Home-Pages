@@ -84,10 +84,6 @@
 <!-- 脚本依赖 -->
 <script type="text/javascript" src="cdn_modules/bootstrap@5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
-// 随机图片生成
-function randomImg() {
-  return `https://api.dwo.cc/api/imgc`;
-}
 
 // 读取 data.json 并渲染
 fetch('data.json')
@@ -101,7 +97,7 @@ fetch('data.json')
     container.innerHTML = data.map(item => `
       <div class="col-md-6">
         <div class="card shadow-sm h-100 card-hover">
-          <img src="${item.cover || randomImg()}" class="card-img-top random-img" alt="cover">
+          <img src="https://api.dwo.cc/api/imgc" class="card-img-top random-img" alt="cover">
           <div class="card-body">
             <h5 class="card-title">${item.title}</h5>
             <a href="${item.url}" class="btn btn-sm btn-outline-primary">阅读全文</a>
