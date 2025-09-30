@@ -1,0 +1,51 @@
+<%- include('partials/header') %>
+
+<div class="container" style="padding-top:100px;">
+  <div class="row">
+    <main class="col-12">
+      <h2 class="section-title">文章列表</h2>
+      <div id="posts-container" class="row g-4">
+        <% if (posts && posts.length > 0) { %>
+          <% posts.forEach(post => { %>
+            <div class="col-12">
+              <div class="card shadow-sm card-hover h-100" style="transition:.3s;">
+                <div class="row g-0 h-100 align-items-center">
+                  <!-- 图：自适应宽度 -->
+                  <div class="col-md-4">
+                    <div class="ratio ratio-16x9">
+                      <img src="https://api.dwo.cc/api/imgc" class="img-fluid object-fit-cover" alt="cover">
+                    </div>
+                  </div>
+                  <!-- 文 -->
+                  <div class="col-md-8 d-flex flex-column">
+                    <div class="card-body py-3">
+                      <h5 class="card-title"><%= post.title %></h5>
+                      <p class="card-text text-muted small mb-2">
+                        <i class="fa fa-calendar"></i> <%= formatDate(post.date) %>
+                        <% if (post.categories) { %>
+                          | <i class="fa fa-folder"></i> <%= post.categories %>
+                        <% } %>
+                      </p>
+                      <p class="card-text flex-grow-1"><%= post.excerpt %></p>
+                      <a href="/<%= post.url %>" class="btn btn-sm btn-outline-primary mt-auto align-self-start">阅读全文</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="col-12 text-center text-muted">暂无文章</div>
+        <% } %>
+      </div>
+
+      <% if (posts.length > 6) { %>
+        <div class="text-center mt-4">
+          <a href="/post.html" class="btn btn-primary">查看所有文章</a>
+        </div>
+      <% } %>
+    </main>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

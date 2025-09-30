@@ -1,3 +1,18 @@
 [build]
-  publish = "."          # 你的静态文件目录（一般是 . 或 dist）
+  command = "npm ci && npm run build"
+  publish = "output"
   functions = "netlify/functions"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+    Access-Control-Max-Age = "86400"
+
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 204
+  conditions = {Method = "OPTIONS"}

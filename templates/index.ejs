@@ -1,0 +1,175 @@
+<%- include('partials/header') -%>
+
+<!-- ===== 首屏 ===== -->
+<section class="hero">
+  <div>
+    <img src="http://q2.qlogo.cn/headimg_dl?dst_uin=417158478&spec=640" class="avatar" alt="avatar">
+    <div class="name">JanePHPDev</div>
+    <div class="bio">PHP/Vue3全栈，热衷于公益事业，喜欢咖啡</div>
+    <div class="social">
+      <a href="https://github.com/JanePHPDev" target="_blank" title="GitHub"><i class="fa fa-github"></i></a>
+      <a href="https://qm.qq.com/q/zQjuUYuWJy" target="_blank" title="qq"><i class="fa fa-qq"></i></a>
+      <a href="mailto:master@zeapi.ink" title="Email"><i class="fa fa-envelope"></i></a>
+    </div>
+  </div>
+</section>
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title">最新文章</h2>
+    <div class="row g-4">
+      <% if (posts && posts.length > 0) { %>
+        <% posts.slice(0, 6).forEach(post => { %>
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100 card-hover" style="transition:.3s;">
+              <div class="card-body">
+                <h5 class="card-title"><%= post.title %></h5>
+                <p class="card-text text-muted small">
+                  <i class="fa fa-calendar"></i> <%= formatDate(post.date) %>
+                  <% if (post.categories) { %>
+                    | <i class="fa fa-folder"></i> <%= post.categories %>
+                  <% } %>
+                </p>
+                <p class="card-text"><%= post.excerpt %></p>
+                <a href="/<%= post.url %>" class="btn btn-sm btn-outline-primary">阅读全文</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-12 text-center text-muted">暂无文章</div>
+      <% } %>
+    </div>
+    <% if (posts.length > 6) { %>
+      <div class="text-center mt-4">
+        <a href="/post.html" class="btn btn-primary">查看所有文章</a>
+      </div>
+    <% } %>
+  </div>
+</section>
+<!-- ===== 个人简介 ===== -->
+<section id="about" class="py-5">
+  <div class="container">
+    <h3 class="section-title">关于我</h3>
+    <p class="text-muted">
+      <img src="https://skillicons.dev/icons?i=html,css,js,vscode,php,nginx,python,golang,aws,gcp,azure,vue,nodejs,git,docker,vim&theme=light&perline=8" width="100%"/><br/><br/>
+      梦泽，一名来自中国湖南的全栈工程师，自2023年起系统性地完成了从前端到后端、从视觉到基础设施的完整技术栈构建：在表现层，他先后掌握了HTML、Bootstrap、Vue及其周边生态；在逻辑层，熟练运用JavaScript、PHP、Node.js进行高并发与业务解耦开发；在样式层，可自如切换CSS、SCSS、Stylus，兼顾可维护性与性能；在运维与交付层，深度实践虚拟化、云原生、Docker与Serverless架构，能够独立完成持续集成、持续交付及多云资源成本控制。
+
+过去两年间，他持续以项目驱动的方式验证技术方案：搭建过博客、网床、图床、Git仓库等基础服务，也运营过内容聚合与资源分发平台，累计迭代6个自有域名，始终将“可折腾性”置于流量与权重之上。对梦泽而言，代码不仅是交付物，更是理解世界、优化世界的一条路径；他热衷用技术解决真实场景中的效率与成本问题，并乐于将过程沉淀为可复用的开源作品与最佳实践。</p>
+  </div>
+</section>
+
+<!-- ===== 新增：技术栈卡片 ===== -->
+<section id="tech-stack" class="py-5">
+  <div class="container">
+    <h3 class="section-title">技术栈</h3>
+    <div class="row g-4">
+      <!-- PHP -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">PHP</h6>
+            <small class="text-muted">服务端老牌脚本</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-success" style="width:100%"></div>
+            </div>
+            <small class="text-success">精通</small>
+          </div>
+        </div>
+      </div>
+      <!-- Vue3 -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">Vue3</h6>
+            <small class="text-muted">渐进式前端框架</small>
+            <div class="progress mt-2">
+              <div class="progress-bar" style="width:65%;background:var(--theme)"></div>
+            </div>
+            <small class="text-primary">半精通</small>
+          </div>
+        </div>
+      </div>
+      <!-- Nodejs -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">Nodejs</h6>
+            <small class="text-muted">JS 运行时</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-warning" style="width:50%"></div>
+            </div>
+            <small class="text-warning">会用</small>
+          </div>
+        </div>
+      </div>
+      <!-- Go -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">Go</h6>
+            <small class="text-muted">云原生利器</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-info" style="width:40%"></div>
+            </div>
+            <small class="text-info">看文档会用</small>
+          </div>
+        </div>
+      </div>
+      <!-- C -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">C</h6>
+            <small class="text-muted">系统级语言</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-secondary" style="width:30%"></div>
+            </div>
+            <small class="text-secondary">勉强</small>
+          </div>
+        </div>
+      </div>
+      <!-- Stylus -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">Stylus</h6>
+            <small class="text-muted">CSS 预处理器</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-success" style="width:100%"></div>
+            </div>
+            <small class="text-success">精通</small>
+          </div>
+        </div>
+      </div>
+      <!-- SCSS -->
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="mb-1">SCSS</h6>
+            <small class="text-muted">CSS 超集</small>
+            <div class="progress mt-2">
+              <div class="progress-bar bg-info" style="width:40%"></div>
+            </div>
+            <small class="text-info">看文档会用</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GitHub 置顶仓库 ===== -->
+<section id="repos" class="py-5">
+  <div class="container">
+    <h3 class="section-title">置顶仓库</h3>
+    <p class="text-muted"><b>我的项目是作品，不是产品。  
+除非我在自述文件里明确写下“它是公开的，可贡献的”，否则，它们始终处于：可用、可商用、可Fork、可Issue，但不可贡献的状态。  
+任何人可以以任意方式使用、修改或分发我的项目——前提是遵守对应的开源协议，但请不要提交拉取请求。这不是开源的标准做法，但这是我选择的方式。</b></p>
+    <div class="row g-4" id="pin-container">
+      <div class="col-12 text-center">
+        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">加载中…</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') -%>
