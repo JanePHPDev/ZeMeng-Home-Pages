@@ -15,68 +15,6 @@
 
 
   <% } %>
-<script>
-const GITHUB_LOGIN = 'JanePHPDev';
-const query = `
-query($login: String!) {
-  user(login: $login) {
-    pinnedItems(first: 4, types: REPOSITORY) {
-      nodes {
-        ... on Repository {
-          name
-          description
-          url
-          stargazerCount
-          forkCount
-          primaryLanguage { name color }
-        }
-      }
-    }
-  }
-}`;
-async function fetchPinnedRepos() {
-  const res = await fetch('/.netlify/functions/pinned-repos'); // 走自己的函数
-  if (!res.ok) throw new Error(`Backend error: ${res.status}`);
-  return res.json(); // 直接返回数组
-}
-
-function card(repo) {
-  const lang = repo.primaryLanguage || { name: 'Unknown', color: '#ccc' };
-  return `
-    <div class="col-md-6">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">
-            <a href="${repo.url}" target="_blank" class="text-decoration-none">
-              <i class="fa fa-github"></i> ${repo.name}
-            </a>
-          </h5>
-          <p class="card-text text-muted small">${repo.description || '暂无描述'}</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="badge" style="background:${lang.color};color:#fff">${lang.name}</span>
-            <div>
-              <span class="text-muted me-2"><i class="fa fa-star"></i> ${repo.stargazerCount}</span>
-              <span class="text-muted"><i class="fa fa-code-fork"></i> ${repo.forkCount}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-}
-document.addEventListener('DOMContentLoaded', () =>
-  fetchPinnedRepos()
-    .then(list => {
-      const container = document.getElementById('pin-container');
-      container.innerHTML = list.length ? list.map(card).join('')
-                                        : '<div class="col-12 text-center text-muted">暂无置顶仓库</div>';
-    })
-    .catch(err => {
-      console.error(err);
-      document.getElementById('pin-container').innerHTML =
-        '<div class="col-12 text-center text-danger">加载失败，请稍后重试</div>';
-    })
-);
-</script>
 
 </body>
 </html>
