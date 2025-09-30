@@ -236,7 +236,7 @@ query($login: String!) {
   }
 }`;
 async function fetchPinnedRepos() {
-  const res = await fetch('https://api.github.com/graphql', {
+  const res = await fetch('https://proxy.mengze.vip/proxy/https://api.github.com/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
