@@ -10,51 +10,83 @@ import chokidar from 'chokidar';
 import chalk from 'chalk';
 import http from 'http';
 import mime from 'mime';
+import { glob } from 'glob';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/* ====== 配置解析 ====== */
+/* ==================== 配置 ==================== */
 function parseConfig() {
   const raw = fs.readFileSync('config.conf', 'utf-8');
   const conf = {};
   let sec = '';
-  raw.split('\n').forEach(l => {
-    l = l.trim();
-    if (l.startsWith('[') && l.endsWith(']')) sec = l.slice(1, -1);
-    else if (l && sec) {
-      const [k, v] = l.split('=').map(s => s.trim());
-      conf[sec] = { ...(conf[sec] || {}), [k]: v };
+  for (const line of raw.split('\n')) {
+    const l = line.trim();
+    if (l.startsWith('[') && l.endsWith(']')) {
+      sec = l.slice(1, -1);
+      continue;
     }
-  });
+    if (!l || !sec) continue;
+    const [k, v] = l.split('=').map(s => s.trim());
+    if (!conf[sec]) conf[sec] = {};
+    conf[sec][k] = v;
+  }
   return conf;
 }
 const CFG = parseConfig();
 const SITE = CFG.site;
 const BUILD = CFG.build;
 const ROUTE = CFG.routing;
-const FEAT = CFG.features;
 
-/* ====== 工具函数 ====== */
-const log = (msg, color = 'gray') => console.log(chalk[color](`[${new Date().toLocaleTimeString()}] ${msg}`));
-const fmtSize = b => (b > 1024 ? (b / 1024).toFixed(1) + ' KiB' : b + ' B');
+/* ==================== 日志 ==================== */
+const LEVEL_COLOR = {
+  info: chalk.blue('ℹ'),
+  warn: chalk.yellow('⚠'),
+  error: chalk.red('✖'),
+  debug: chalk.gray('◆')
+};
+let logLevel = 'info';
+function setLogLevel(l) {
+  logLevel = l;
+}
+function _log(level, msg, ...args) {
+  if (level === 'debug' && logLevel !== 'debug') return;
+  const time = chalk.gray(new Date().toLocaleTimeString());
+  console.log(`${time} ${LEVEL_COLOR[level]} ${msg}`, ...args);
+}
+const logger = {
+  info(m, ...a) { _log('info', m, ...a); },
+  warn(m, ...a) { _log('warn', m, ...a); },
+  error(m, ...a) { _log('error', m, ...a); },
+  debug(m, ...a) { _log('debug', m, ...a); },
+  update(file) {
+    const time = chalk.gray(new Date().toLocaleTimeString());
+    console.log(`${time} ${chalk.cyan(file)} ${chalk.green('→')} ${chalk.magenta('热重载')}`);
+  }
+};
 
+/* ==================== 工具 ==================== */
+function fmtSize(b) {
+  if (b > 1024) {
+    return (b / 1024).toFixed(1) + ' KiB';
+  }
+  return b + ' B';
+}
 function ensureArray(v) {
   if (!v) return [];
   if (Array.isArray(v)) return v.map(s => s.trim()).filter(Boolean);
   return v.split(',').map(s => s.trim()).filter(Boolean);
 }
-
 function fmtDate(d) {
   return new Date(d).toLocaleString('zh-CN');
 }
-
 function genId(content) {
-  return ROUTE.type === 'md5'
-    ? crypto.createHash('md5').update(content).digest('hex').slice(0, 5)
-    : null;
+  if (ROUTE.type === 'md5') {
+    return crypto.createHash('md5').update(content).digest('hex').slice(0, 5);
+  }
+  return null;
 }
 
-/* ====== Markdown 处理 ====== */
+/* ==================== Markdown ==================== */
 marked.use({
   renderer: {
     code(code, lang) {
@@ -64,13 +96,20 @@ marked.use({
   }
 });
 
-
-function parsePost(filePath, idx) {
-  const src = fs.readFileSync(filePath, 'utf-8');
+/* ==================== 解析文章 ==================== */
+async function parsePost(filePath) {
+  const src = await fs.readFile(filePath, 'utf-8');
   const { data: fm, content: md } = matter(src);
   const html = marked(md);
   const id = genId(md);
-  const fileName = ROUTE.type === 'sequential' ? `${idx + 1}.html` : `${id}.html`;
+
+  let fileName;
+  if (ROUTE.type === 'sequential') {
+    fileName = '1.html'; // 每次全量重新编号，从 1 开始
+  } else {
+    fileName = `${id}.html`;
+  }
+
   return {
     title: fm.title || path.basename(filePath, '.md'),
     categories: fm.categories || '未分类',
@@ -84,81 +123,96 @@ function parsePost(filePath, idx) {
   };
 }
 
-function loadPosts() {
-  const dir = BUILD.posts_dir;
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.md'));
-  return files
-    .map((f, i) => parsePost(path.join(dir, f), i))
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
-}
-
-/* ====== 渲染 ====== */
-async function render(tpl, data, out) {
+/* ==================== 渲染 ==================== */
+async function render(tpl, data, outFile) {
   const tplPath = path.join(BUILD.templates_dir, `${tpl}.ejs`);
   const html = await ejs.renderFile(tplPath, data, { filename: tplPath });
-  await fs.outputFile(out, html);
-  const bytes = Buffer.byteLength(html, 'utf8');
-  log(`写入 ${out}  (${fmtSize(bytes)})`, 'cyan');
+  await fs.outputFile(outFile, html);
+  logger.debug(`写入 ${path.basename(outFile)}  ${fmtSize(Buffer.byteLength(html))}`);
 }
 
-/* ====== 构建流程 ====== */
+/* ==================== 全量构建 ==================== */
 async function build() {
-  log('开始构建…', 'green');
+  const start = performance.now();
+  logger.info('开始全量构建…');
+
+  // 1. 收集文章
+  const files = await glob('**/*.md', { cwd: BUILD.posts_dir });
+  const posts = [];
+  for (const f of files) {
+    const full = path.join(BUILD.posts_dir, f);
+    posts.push(await parsePost(full));
+  }
+  posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // 2. 清空输出目录
   await fs.remove(BUILD.output_dir);
-  const posts = loadPosts();
-  log(`共 ${posts.length} 篇文章`, 'blue');
 
-  await render('index', { site: SITE, posts: posts.slice(0, 5), formatDate: fmtDate },
+  // 3. 渲染页面
+  await render('index', { site: SITE, posts: posts.slice(0, 7), formatDate: fmtDate },
     path.join(BUILD.output_dir, 'index.html'));
-
   await render('post', { site: SITE, posts, formatDate: fmtDate },
     path.join(BUILD.output_dir, 'post.html'));
-    
-await render('gists', { site: SITE }, path.join(BUILD.output_dir, 'gists.html'));
-
   for (const p of posts) {
     await render('article', { site: SITE, post: p, posts, formatDate: fmtDate },
       path.join(BUILD.output_dir, 'article', p.fileName));
   }
 
+  // 4. build_data.json
   await fs.outputFile(
     path.join(BUILD.output_dir, 'build_data.json'),
-    JSON.stringify({ generated: new Date().toISOString(), posts }, null, 2)
+    JSON.stringify({ generated: new Date().toISOString(), posts })
   );
 
+  // 5. 拷贝静态资源
   if (await fs.pathExists(BUILD.assets_dir)) {
     await fs.copy(BUILD.assets_dir, path.join(BUILD.output_dir, 'assets'));
   }
-  log('构建完成！', 'green');
+
+  const cost = (performance.now() - start).toFixed(0);
+  logger.info(`构建完成 (${cost} ms) 共 ${posts.length} 篇`);
 }
 
-/* ====== 静态文件服务器 ====== */
-function serve(port = 4000) {
+/* ==================== 静态服务器 ==================== */
+function serve(port) {
   const srv = http.createServer(async (req, res) => {
     let file = path.join(BUILD.output_dir, req.url === '/' ? '/index.html' : req.url);
     if (!(await fs.pathExists(file))) {
-      res.writeHead(404); res.end('404'); return;
+      res.writeHead(404);
+      res.end('404');
+      return;
     }
-    const stat = await fs.stat(file);
-    if (stat.isDirectory()) file = path.join(file, 'index.html');
-    const ext = path.extname(file).slice(1);
-    res.writeHead(200, { 'Content-Type': mime.getType(ext) || 'text/plain' });
+    if ((await fs.stat(file)).isDirectory()) {
+      file = path.join(file, 'index.html');
+    }
+    res.writeHead(200, { 'Content-Type': mime.getType(path.extname(file).slice(1)) || 'text/plain' });
     fs.createReadStream(file).pipe(res);
   });
-  srv.listen(port, () => log(`本地服务器运行中 → http://localhost:${port}`, 'magenta'));
+  srv.listen(port, () => logger.info(`本地服务器运行中 → http://localhost:${port}`));
 }
 
-/* ====== 监听模式 ====== */
-function watch() {
-  build().then(() => serve());
-  chokidar.watch(['config.conf', BUILD.templates_dir, BUILD.posts_dir], { ignored: /node_modules/ })
-    .on('change', () => {
-      log('检测到变更，重新构建…', 'yellow');
+/* ==================== 监听模式 ==================== */
+function watch(port) {
+  build().then(() => serve(port));
+  chokidar.watch(['config.conf', BUILD.templates_dir, BUILD.posts_dir], { ignored: /node_modules|\.git/ })
+    .on('change', p => {
+      logger.update(p);
       build();
     });
 }
 
-/* ====== CLI ====== */
+/* ==================== 入口 ==================== */
 const argv = process.argv.slice(2);
-if (argv.includes('--watch')) watch();
-else build();
+let port = 4000;
+const pIdx = argv.findIndex(a => a === '-p' || a === '--port');
+if (pIdx !== -1 && argv[pIdx + 1]) {
+  port = Number(argv[pIdx + 1]);
+}
+if (argv.includes('--debug')) {
+  setLogLevel('debug');
+}
+if (argv.includes('--watch')) {
+  watch(port);
+} else {
+  build();
+}
