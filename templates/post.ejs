@@ -7,138 +7,57 @@
     <main class="col-lg-8">
       <h2 class="section-title">文章列表</h2>
       <div id="posts-container" class="row g-4">
-        <% if (posts && posts.length > 0) { %>
-          <% posts.forEach(post => { %>
-            <div class="col-12">
-              <div class="post-card">
-                <div class="row g-0 h-100 align-items-center">
-                  <div class="col-md-4">
-                    <img src="https://picsum.photos/1920/1080" class="img-fluid" alt="cover">
-                  </div>
-                  <div class="col-md-8 d-flex flex-column">
-                    <div class="card-body">
-                      <h5 class="post-title"><%= post.title %></h5>
-                      <p class="post-meta text-muted small mb-2">
-                        <i class="fa fa-calendar"></i> <%= formatDate(post.date) %>
-                        <% if (post.categories) { %>
-                          | <i class="fa fa-folder"></i> <%= post.categories %>
-                        <% } %>
-                      </p>
-                      <p class="post-excerpt flex-grow-1"><%= post.excerpt %></p>
-                      <a href="/<%= post.url %>" class="btn btn-sm btn-outline-primary mt-auto align-self-start">阅读全文</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <% }) %>
-        <% } else { %>
-          <div class="col-12 text-center text-muted">暂无文章</div>
-        <% } %>
-      </div>
-
+  <% if (posts && posts.length > 0) { %>
+    <% posts.forEach(post => { %>
+      <%- include('partials/card-item', {post, formatDate}) %>
+    <% }) %>
+  <% } else { %>
+    <div class="col-12 text-center text-muted">暂无文章</div>
+  <% } %>
+</div>
     </main>
 
-    <!-- 右栏：与首页一致的侧边栏 -->
     <aside class="col-lg-4">
       <div class="sticky-lg-top" style="top:90px;z-index:1020;">
         <section id="about" class="mb-4">
           <h4 class="section-title">关于我</h4>
           <div class="text-center mb-3">
-            <img src="http://q2.qlogo.cn/headimg_dl?dst_uin=417158478&spec=640" class="rounded-circle shadow-sm" width="90" height="90" alt="avatar">
+            <img src="<%= site.avatar %>" class="rounded-circle shadow-sm" width="90" height="90" alt="avatar">
             <div class="mt-2">
-              <a href="https://github.com/JanePHPDev" target="_blank" class="text-dark mx-1" title="GitHub"><i class="fa fa-github fa-lg"></i></a>
-              <a href="https://qm.qq.com/q/zQjuUYuWJy" target="_blank" class="text-dark mx-1" title="QQ"><i class="fa fa-qq fa-lg"></i></a>
-              <a href="mailto:master@zeapi.ink" class="text-dark mx-1" title="Email"><i class="fa fa-envelope fa-lg"></i></a>
+              <% if (social.github) { %><a href="<%= social.github %>" target="_blank" class="text-dark mx-1" title="GitHub"><i class="fa fa-github fa-lg"></i></a><% } %>
+              <% if (social.qq) { %><a href="<%= social.qq %>" target="_blank" class="text-dark mx-1" title="QQ"><i class="fa fa-qq fa-lg"></i></a><% } %>
+              <% if (social.email_link) { %><a href="<%= social.email_link %>" class="text-dark mx-1" title="Email"><i class="fa fa-envelope fa-lg"></i></a><% } %>
             </div>
           </div>
           <p class="small text-muted">
             <img src="https://skillicons.dev/icons?i=html,css,js,vscode,php,nginx,python,golang,aws,gcp,azure,vue,nodejs,git,docker,vim&theme=light&perline=8" class="w-100 mb-2"/>
-            梦泽，一名来自中国湖南的全栈工程师，自2023年起系统性地完成了从前端到后端、从视觉到基础设施的完整技术栈构建：在表现层，他先后掌握了HTML、Bootstrap、Vue及其周边生态；在逻辑层，熟练运用JavaScript、PHP、Node.js进行高并发与业务解耦开发；在样式层，可自如切换CSS、SCSS、Stylus，兼顾可维护性与性能；在运维与交付层，深度实践虚拟化、云原生、Docker与Serverless架构，能够独立完成持续集成、持续交付及多云资源成本控制。<br/><br/>
-            过去两年间，他持续以项目驱动的方式验证技术方案：搭建过博客、网床、图床、Git仓库等基础服务，也运营过内容聚合与资源分发平台，累计迭代6个自有域名，始终将“可折腾性”置于流量与权重之上。对梦泽而言，代码不仅是交付物，更是理解世界、优化世界的一条路径；他热衷用技术解决真实场景中的效率与成本问题，并乐于将过程沉淀为可复用的开源作品与最佳实践。
+            <%= site.bio %>
           </p>
         </section>
 
         <section id="tech-stack" class="mb-4">
           <h4 class="section-title">技术栈</h4>
           <div class="row g-3">
+            <% tech.forEach(item => { %>
+            <% const techItem = item.name ? item : Object.assign({}, item); %>
             <div class="col-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h6 class="mb-1">PHP</h6>
-                  <small class="text-muted">服务端老牌脚本</small>
+                  <h6 class="mb-1"><%= techItem.name %></h6>
+                  <small class="text-muted"><%= techItem.desc %></small>
                   <div class="progress mt-2">
-                    <div class="progress-bar bg-success" style="width:100%"></div>
+                    <div class="progress-bar bg-<%= techItem.color %>" style="width:<%= techItem.level %>%"></div>
                   </div>
-                  <small class="text-success">精通</small>
+                  <small class="text-<%= techItem.color %>"><%= techItem.label %></small>
                 </div>
               </div>
             </div>
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">Vue3</h6>
-                  <small class="text-muted">渐进式前端框架</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar" style="width:65%;background:var(--theme)"></div>
-                  </div>
-                  <small class="text-primary">半精通</small>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">Nodejs</h6>
-                  <small class="text-muted">JS 运行时</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-warning" style="width:50%"></div>
-                  </div>
-                  <small class="text-warning">会用</small>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">Go</h6>
-                  <small class="text-muted">云原生利器</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-info" style="width:40%"></div>
-                  </div>
-                  <small class="text-info">看文档会用</small>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">Stylus</h6>
-                  <small class="text-muted">CSS 预处理器</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-success" style="width:100%"></div>
-                  </div>
-                  <small class="text-success">精通</small>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">SCSS</h6>
-                  <small class="text-muted">CSS 超集</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-info" style="width:40%"></div>
-                  </div>
-                  <small class="text-info">看文档会用</small>
-                </div>
-              </div>
-            </div>
+            <% }) %>
           </div>
         </section>
       </div><!-- /sticky -->
     </aside><!-- /右栏 -->
-  </div><!-- /row -->
-</div><!-- /container -->
+  </div>
+</div>
 
 <%- include('partials/footer') %>

@@ -29,8 +29,7 @@
 <footer class="mt-5 pt-4 border-top text-center">
   <div class="author-info bg-light p-4 rounded d-inline-block text-start">
     <div class="d-flex align-items-center">
-      <img src="http://q2.qlogo.cn/headimg_dl?dst_uin=417158478&spec=640"
-           class="rounded-circle me-3"
+      <img src="<%= site.avatar %>" class="rounded-circle me-3"
            style="width:60px;height:60px;object-fit:cover;" alt="avatar">
       <div>
         <h5 class="mb-1"><%= site.author %></h5>
@@ -45,14 +44,14 @@
 <nav class="mt-4 position-relative" style="min-height: 80px;">
   <% const currentIndex = posts.findIndex(p => p.fileName === post.fileName) %>
   <% if (currentIndex > 0) { %>
-    <a href="/<%= posts[currentIndex - 1].url %>"
+    <a href="<%= posts[currentIndex - 1].url %>"
        class="btn btn-outline-primary position-absolute top-0 start-0 text-truncate d-inline-block"
        style="max-width: 46%; white-space: nowrap;">
       <i class="fa fa-arrow-left"></i> 上一篇：<%= posts[currentIndex - 1].title %>
     </a>
   <% } %>
   <% if (currentIndex < posts.length - 1) { %>
-    <a href="/<%= posts[currentIndex + 1].url %>"
+    <a href="<%= posts[currentIndex + 1].url %>"
        class="btn btn-outline-primary position-absolute bottom-0 end-0 text-truncate d-inline-block"
        style="max-width: 46%; white-space: nowrap;">
       下一篇：<%= posts[currentIndex + 1].title %> <i class="fa fa-arrow-right"></i>
@@ -62,6 +61,5 @@
     </div>
   </div>
 </div>
-
 
 <%- include('partials/footer') -%>

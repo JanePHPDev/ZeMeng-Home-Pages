@@ -1,0 +1,26 @@
+<div class="col-12 mb-4">
+  <div class="post-card h-100">
+    <div class="row g-0 h-100 align-items-stretch flex-nowrap">
+      <!-- 图左 -->
+      <div class="col-4 col-md-4">
+        <img src="<%= post.cover || 'https://picsum.photos/seed/'+(post.title||'default').replace(/\s/g,'')+'/600/600' %>"
+             class="img-fluid w-100 h-100 object-fit-cover" alt="cover">
+      </div>
+
+      <!-- 文右 -->
+      <div class="col-8 col-md-8 d-flex flex-column">
+        <div class="card-body d-flex flex-column h-100">
+          <h5 class="post-title"><%= post.title %></h5>
+          <p class="post-excerpt flex-grow-1"><%= post.excerpt %></p>
+          <div class="post-meta mb-2 small text-muted">
+            <i class="fa fa-calendar-o"></i> <%= formatDate(post.date) %>
+            <% if (post.categories) { %>
+              <span class="ms-2"><i class="fa fa-tag"></i> <%= post.categories %></span>
+            <% } %>
+          </div>
+          <a href="<%= post.url %>" class="btn btn-outline-primary btn-sm mt-auto align-self-start">阅读全文 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

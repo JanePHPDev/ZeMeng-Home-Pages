@@ -4,110 +4,272 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= site.title %></title>
+
   <link href="https://cdn.mengze.vip/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <% if (typeof code_highlight !== 'undefined' && code_highlight) { %>
+  <% if (features && features.code_highlight === 'true') { %>
   <link href="https://cdn.mengze.vip/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.min.css" rel="stylesheet">
   <% } %>
-<style>
-:root{
-  --theme:#6c7fd8;
-  --theme-light:#a8b5f0;
-  --bg:#f8f9fc;
-  --card:#ffffff;
-  --text:#2d3442;
-  --text2:#5f6a82;
-  --radius:12px;
-  --transition:.35s cubic-bezier(.4,0,.2,1);
+  <style>
+  :root {
+    --theme: #6c7fd8;
+    --theme-light: #a8b5f0;
+    --bg: #f8f9fc;
+    --card: #ffffff;
+    --text: #2d3442;
+    --text2: #5f6a82;
+    --radius: 12px;
+    --transition: .35s cubic-bezier(.4, 0, .2, 1);
 }
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  scroll-behavior:smooth;
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    scroll-behavior: smooth;
 }
-.navbar{
-  background:rgba(255,255,255,0);
-  transition:background var(--transition),box-shadow var(--transition);
+
+.navbar {
+    background: rgba(255, 255, 255, 0);
+    transition: background var(--transition), box-shadow var(--transition);
 }
-.navbar.scroll{
-  background:rgba(255,255,255,.92);
-  backdrop-filter:saturate(180%) blur(12px);
-  box-shadow:0 4px 20px rgba(0,0,0,.06);
+
+.navbar.scroll {
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: saturate(180%) blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
 }
-.navbar-brand,.navbar-nav .nav-link{color:var(--text)!important;}
-.navbar-nav .nav-link{position:relative;padding:.5rem 1rem!important;}
-.navbar-nav .nav-link::after{
-  content:'';position:absolute;left:50%;bottom:4px;
-  width:0;height:2px;background:var(--theme);transition:width var(--transition);
-  transform:translateX(-50%);
+
+.navbar-brand,
+.navbar-nav .nav-link {
+    color: var(--text) !important;
 }
-.navbar-nav .nav-link:hover::after{width:60%;}
-.hero{
-  min-height:100vh;
-  display:flex;align-items:center;justify-content:center;text-align:center;
-  background:linear-gradient(160deg,var(--theme-light) 0%,var(--bg) 60%);
-  position:relative;
+
+.navbar-nav .nav-link {
+    position: relative;
+    padding: .5rem 1rem !important;
 }
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.03'/%3E%3C/svg%3E");
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 4px;
+    width: 0;
+    height: 2px;
+    background: var(--theme);
+    transition: width var(--transition);
+    transform: translateX(-50%);
 }
-.avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 8px 30px rgba(0,0,0,.15);}
-.name{font-size:2.2rem;font-weight:700;margin-top:1rem;}
-.bio{color:var(--text2);max-width:600px;margin:0 auto;}
-.social a{color:var(--theme);font-size:1.5rem;margin:0 .6rem;transition:transform var(--transition),opacity var(--transition);}
-.social a:hover{transform:translateY(-3px);opacity:.8;}
-.section-title{font-weight:600;font-size:1.6rem;margin-bottom:2.5rem;text-align:center;letter-spacing:.5px;}
-.section-title::after{content:'';display:block;width:60px;height:3px;background:var(--theme);margin:8px auto 0;border-radius:2px;}
-.post-card{
-  border-radius:var(--radius);
-  overflow:hidden;
-  background:var(--card);
-  box-shadow:0 4px 20px rgba(0,0,0,.05);
-  transition:transform var(--transition),box-shadow var(--transition);
-  height:100%;
-  display:flex;flex-direction:column;
+
+.navbar-nav .nav-link:hover::after {
+    width: 60%;
 }
-.post-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,.09);}
-.post-img{width:100%;height:180px;object-fit:cover;}
-.post-body{padding:1.25rem 1.5rem 1.5rem;display:flex;flex-direction:column;flex:1;}
-.post-title{font-size:1.15rem;font-weight:600;margin-bottom:.5rem;line-height:1.4;}
-.post-excerpt{font-size:.9rem;color:var(--text2);flex:1;margin-bottom:1rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.post-meta{font-size:.8rem;color:var(--text2);}
-.post-btn{align-self:flex-start;}
-.pagefooter{background:rgba(255,255,255,.6);backdrop-filter:blur(5px);}
-pre[class*=language-]{border-radius:var(--radius);}
-/* 列表页正方形图片 */
-.post-card .row.g-0 > .col-md-4{aspect-ratio:1/1;max-width:180px;}
-.post-card .row.g-0 > .col-md-4 img{width:100%;height:100%;object-fit:cover;border-top-left-radius:var(--radius);border-bottom-left-radius:var(--radius);}
-.post-card .col-md-8 .card-body{padding:1.25rem 1.5rem 1.5rem !important;}
-/* ===== 文章正文图片防溢出 ===== */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(160deg, var(--theme-light) 0%, var(--bg) 60%);
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.03'/%3E%3C/svg%3E");
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .15);
+}
+
+.name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+.bio {
+    color: var(--text2);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.social a {
+    color: var(--theme);
+    font-size: 1.5rem;
+    margin: 0 .6rem;
+    transition: transform var(--transition), opacity var(--transition);
+}
+
+.social a:hover {
+    transform: translateY(-3px);
+    opacity: .8;
+}
+
+.section-title {
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    letter-spacing: .5px;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--theme);
+    margin: 8px auto 0;
+    border-radius: 2px;
+}
+
+.post-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+    transition: transform var(--transition), box-shadow var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .09);
+}
+
+.post-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.post-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.post-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: .5rem;
+    line-height: 1.4;
+}
+
+.post-excerpt {
+    font-size: .9rem;
+    color: var(--text2);
+    flex: 1;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.post-meta {
+    font-size: .8rem;
+    color: var(--text2);
+}
+
+.post-btn {
+    align-self: flex-start;
+}
+
+.pagefooter {
+    background: rgba(255, 255, 255, .6);
+    backdrop-filter: blur(5px);
+}
+
+pre[class*=language-] {
+    border-radius: var(--radius);
+}
+
+.post-card .row.g-0>.col-md-4 {
+    max-width: 180px;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+}
+
+.post-card .row.g-0>.col-md-4 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .post-content img {
-  max-width: 100%;   /* 宽度不超过父级 */
-  height: auto;      /* 高度等比 */
-  display: block;    /* 去掉底部空隙 */
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.object-fit-cover{
+  object-fit: cover;
+}
+
+@media (max-width: 575.98px) {
+  .post-card .post-title {
+    font-size: 1rem;
+  }
+  .post-card .post-excerpt {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+  .post-card .post-meta {
+    font-size: 0.75rem;
+  }
+  .post-card .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+.post-card .card-body {
+  padding: 1.5rem;
+}
+
+@media (max-width: 575.98px) {
+  .post-card .card-body {
+    padding: 1rem;
+  }
 }
 </style>
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg fixed-top" id="topnav">
   <div class="container-fluid">
-    <a class="navbar-brand" href="../">JanePHPDev 梦泽</a>
+    <a class="navbar-brand" href="/"><%= site.title %></a>
     <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="nav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="../post.html">文章列表</a></li>
-        <li class="nav-item"><a class="nav-link" href="../gists.html">代码片段</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://github.com/JanePHPDev" target="_blank"><i class="fa fa-github"></i> JanePHPDev</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://qm.qq.com/q/zQjuUYuWJy" target="_blank"><i class="fa fa-qq"></i> 技术支持</a></li>
-        <li class="nav-item"><a class="nav-link" href="mailto:master@zeapi.ink"><i class="fa fa-envelope"></i> master@zeapi.ink</a></li>
+        <li class="nav-item"><a class="nav-link" href="/post.html">文章列表</a></li>
+        <li class="nav-item"><a class="nav-link" href="/gists.html">代码片段</a></li>
+        <% if (social.github) { %><li class="nav-item"><a class="nav-link" href="<%= social.github %>" target="_blank"><i class="fa fa-github"></i> GitHub</a></li><% } %>
+        <% if (social.qq) { %><li class="nav-item"><a class="nav-link" href="<%= social.qq %>" target="_blank"><i class="fa fa-qq"></i> QQ</a></li><% } %>
+        <% if (social.email_link) { %><li class="nav-item"><a class="nav-link" href="<%= social.email_link %>"><i class="fa fa-envelope"></i> <%= site.email %></a></li><% } %>
       </ul>
     </div>
   </div>
 </nav>
+
 <script>
 window.addEventListener('scroll',()=>{
   document.getElementById('topnav').classList.toggle('scroll',window.scrollY>40);

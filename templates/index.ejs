@@ -1,15 +1,14 @@
 <%- include('partials/header') -%>
 
-<!-- ===== 全宽 Hero（带向下箭头） ===== -->
 <section class="hero position-relative">
   <div>
-    <img src="http://q2.qlogo.cn/headimg_dl?dst_uin=417158478&spec=640" class="avatar" alt="avatar">
-    <div class="name">JanePHPDev</div>
-    <div class="bio">PHP/Vue3全栈，热衷于公益事业，喜欢咖啡。</div>
+    <img src="<%= site.avatar %>" class="avatar" alt="avatar">
+    <div class="name"><%= site.author %></div>
+    <div class="bio"><%= site.description %></div>
     <div class="social">
-      <a href="https://github.com/JanePHPDev" target="_blank" title="GitHub"><i class="fa fa-github"></i></a>
-      <a href="https://qm.qq.com/q/zQjuUYuWJy" target="_blank" title="qq"><i class="fa fa-qq"></i></a>
-      <a href="mailto:master@zeapi.ink" title="Email"><i class="fa fa-envelope"></i></a>
+      <% if (social.github) { %><a href="<%= social.github %>" target="_blank" title="GitHub"><i class="fa fa-github"></i></a><% } %>
+      <% if (social.qq) { %><a href="<%= social.qq %>" target="_blank" title="QQ"><i class="fa fa-qq"></i></a><% } %>
+      <% if (social.email_link) { %><a href="<%= social.email_link %>" title="Email"><i class="fa fa-envelope"></i></a><% } %>
     </div>
   </div>
   <a href="#posts" class="position-absolute bottom-0 mb-4 text-dark text-decoration-none">
@@ -20,159 +19,70 @@
 <style>@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .bounce{animation:bounce 1.5s infinite;}</style>
 
-<!-- ===== 两栏区域 ===== -->
 <div class="container-lg pt-5" id="posts">
   <div class="row gx-4">
-    <!-- 左栏：主内容 -->
     <main class="col-lg-8">
-      <!-- 最新文章 -->
       <section class="py-5">
         <h2 class="section-title">最新文章</h2>
         <div class="row g-4">
           <% if (posts && posts.length > 0) { %>
             <% posts.slice(0, 4).forEach(post => { %>
-              <div class="col-md-6">
-                <div class="post-card">
-                  <img src="<%= post.cover || 'https://picsum.photos/seed/'+(post.title||'default').replace(/\s/g,'')+'/600/400' %>" class="post-img" alt="cover">
-                  <div class="post-body">
-                    <h5 class="post-title"><%= post.title %></h5>
-                    <p class="post-excerpt"><%= post.excerpt %></p>
-                    <div class="post-meta mb-2">
-                      <i class="fa fa-calendar-o"></i> <%= formatDate(post.date) %>
-                      <% if (post.categories) { %>
-                        <span class="ms-3"><i class="fa fa-tag"></i> <%= post.categories %></span>
-                      <% } %>
-                    </div>
-                    <a href="/<%= post.url %>" class="btn btn-outline-primary btn-sm post-btn">阅读全文 →</a>
-                  </div>
-                </div>
-              </div>
+              <%- include('partials/card-item', {post, formatDate}) %>
             <% }) %>
           <% } else { %>
             <div class="col-12 text-center text-muted">暂无文章</div>
           <% } %>
         </div>
-        <% if (posts.length > 6) { %>
+        <% if (posts.length > 4) { %>
           <div class="text-center mt-5">
             <a href="/post.html" class="btn btn-primary px-4">查看所有文章</a>
           </div>
         <% } %>
       </section>
-
     </main>
 
-    <!-- 右栏：侧边栏 -->
     <aside class="col-lg-4">
       <div class="sticky-lg-top" style="top:100px;z-index:1020;">
-        <!-- 关于我（标题与左侧“最新文章”水平对齐） -->
         <section id="about" class="mb-4">
           <h2 class="section-title">关于我</h2>
           <div class="text-center mb-3">
-            <img src="http://q2.qlogo.cn/headimg_dl?dst_uin=417158478&spec=640"
+            <img src="<%= site.avatar %>"
                  class="rounded-circle shadow-sm" width="120" height="120" alt="avatar">
             <div class="mt-2">
-              <a href="https://github.com/JanePHPDev" target="_blank" class="text-dark mx-1"
-                 title="GitHub"><i class="fa fa-github fa-lg"></i></a>
-              <a href="https://qm.qq.com/q/zQjuUYuWJy" target="_blank" class="text-dark mx-1"
-                 title="QQ"><i class="fa fa-qq fa-lg"></i></a>
-              <a href="mailto:master@zeapi.ink" class="text-dark mx-1"
-                 title="Email"><i class="fa fa-envelope fa-lg"></i></a>
+              <% if (social.github) { %><a href="<%= social.github %>" target="_blank" class="text-dark mx-1" title="GitHub"><i class="fa fa-github fa-lg"></i></a><% } %>
+              <% if (social.qq) { %><a href="<%= social.qq %>" target="_blank" class="text-dark mx-1" title="QQ"><i class="fa fa-qq fa-lg"></i></a><% } %>
+              <% if (social.email_link) { %><a href="<%= social.email_link %>" class="text-dark mx-1" title="Email"><i class="fa fa-envelope fa-lg"></i></a><% } %>
             </div>
           </div>
           <p class="small text-muted">
             <img src="https://skillicons.dev/icons?i=html,css,js,vscode,php,nginx,python,golang,aws,gcp,azure,vue,nodejs,git,docker,vim&theme=light&perline=8" class="w-100 mb-2"/>
-            梦泽，一名来自中国湖南的全栈工程师，自2023年起系统性地完成了从前端到后端、从视觉到基础设施的完整技术栈构建：在表现层，他先后掌握了HTML、Bootstrap、Vue及其周边生态；在逻辑层，熟练运用JavaScript、PHP、Node.js进行高并发与业务解耦开发；在样式层，可自如切换CSS、SCSS、Stylus，兼顾可维护性与性能；在运维与交付层，深度实践虚拟化、云原生、Docker与Serverless架构，能够独立完成持续集成、持续交付及多云资源成本控制。<br/><br/>
-            过去两年间，他持续以项目驱动的方式验证技术方案：搭建过博客、网床、图床、Git仓库等基础服务，也运营过内容聚合与资源分发平台，累计迭代6个自有域名，始终将“可折腾性”置于流量与权重之上。对梦泽而言，代码不仅是交付物，更是理解世界、优化世界的一条路径；他热衷用技术解决真实场景中的效率与成本问题，并乐于将过程沉淀为可复用的开源作品与最佳实践。
+            <%= site.bio %>
           </p>
         </section>
 
-        <!-- 技术栈（一行两个） -->
         <section id="tech-stack" class="mb-4">
           <h4 class="section-title">技术栈</h4>
           <div class="row g-3">
-            <!-- PHP -->
+            <% tech.forEach(item => { %>
+            <% const techItem = item.name ? item : Object.assign({}, item); %>
             <div class="col-6">
               <div class="card shadow-sm h-100">
                 <div class="card-body">
-                  <h6 class="mb-1">PHP</h6>
-                  <small class="text-muted">服务端老牌脚本</small>
+                  <h6 class="mb-1"><%= techItem.name %></h6>
+                  <small class="text-muted"><%= techItem.desc %></small>
                   <div class="progress mt-2">
-                    <div class="progress-bar bg-success" style="width:100%"></div>
+                    <div class="progress-bar bg-<%= techItem.color %>" style="width:<%= techItem.level %>%"></div>
                   </div>
-                  <small class="text-success">精通</small>
+                  <small class="text-<%= techItem.color %>"><%= techItem.label %></small>
                 </div>
               </div>
             </div>
-            <!-- Vue3 -->
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">Vue3</h6>
-                  <small class="text-muted">渐进式前端框架</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar" style="width:65%;background:var(--theme)"></div>
-                  </div>
-                  <small class="text-primary">半精通</small>
-                </div>
-              </div>
-            </div>
-            <!-- Nodejs -->
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">Nodejs</h6>
-                  <small class="text-muted">JS 运行时</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-warning" style="width:50%"></div>
-                  </div>
-                  <small class="text-warning">会用</small>
-                </div>
-              </div>
-            </div>
-            <!-- Go -->
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">Go</h6>
-                  <small class="text-muted">云原生利器</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-info" style="width:40%"></div>
-                  </div>
-                  <small class="text-info">看文档会用</small>
-                </div>
-              </div>
-            </div>
-            <!-- Stylus -->
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">Stylus</h6>
-                  <small class="text-muted">CSS 预处理器</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-success" style="width:100%"></div>
-                  </div>
-                  <small class="text-success">精通</small>
-                </div>
-              </div>
-            </div>
-            <!-- SCSS -->
-            <div class="col-6">
-              <div class="card shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="mb-1">SCSS</h6>
-                  <small class="text-muted">CSS 超集</small>
-                  <div class="progress mt-2">
-                    <div class="progress-bar bg-info" style="width:40%"></div>
-                  </div>
-                  <small class="text-info">看文档会用</small>
-                </div>
-              </div>
-            </div>
+            <% }) %>
           </div>
         </section>
-      </div><!-- /sticky -->
-    </aside><!-- /右栏 -->
-  </div><!-- /row -->
-</div><!-- /container -->
+      </div>
+    </aside>
+  </div>
+</div>
 
 <%- include('partials/footer') -%>
