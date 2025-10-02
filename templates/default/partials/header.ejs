@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= site.title %></title>
+  <link href="/assets/style.css" rel="stylesheet">
+  <link href="https://cdn.mengze.vip/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <% if (features && features.code_highlight === 'true') { %>
+  <link href="https://cdn.mengze.vip/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.min.css" rel="stylesheet">
+  <% } %>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg fixed-top" id="topnav">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"><%= site.title %></a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/post.html">文章列表</a></li>
+        <li class="nav-item"><a class="nav-link" href="/gists.html">代码片段</a></li>
+        <% if (social.github) { %><li class="nav-item"><a class="nav-link" href="<%= social.github %>" target="_blank"><i class="fa fa-github"></i> GitHub</a></li><% } %>
+        <% if (social.qq) { %><li class="nav-item"><a class="nav-link" href="<%= social.qq %>" target="_blank"><i class="fa fa-qq"></i> QQ</a></li><% } %>
+        <% if (social.email_link) { %><li class="nav-item"><a class="nav-link" href="<%= social.email_link %>"><i class="fa fa-envelope"></i> <%= site.email %></a></li><% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+window.addEventListener('scroll',()=>{
+  document.getElementById('topnav').classList.toggle('scroll',window.scrollY>40);
+});
+</script>

@@ -22,12 +22,12 @@ process.on('uncaughtException', (err) => {
 
 /* ==================== Logo ==================== */
 const LOGO = `
-${chalk.cyan("  ____             _            ")}
-${chalk.cyan(" |  _ \\  ___  _ __| |_ ___ _ __ ")}
-${chalk.cyan(" | | | |/ _ \\| '__| __/ _ \\ '__|")}
-${chalk.cyan(" | |_| | (_) | |  | ||  __/ |   ")}
-${chalk.cyan(" |____/ \\___/|_|   \\__\\___|_|   ")}
-${chalk.magenta("ZeBlog")}
+${chalk.magenta("  _____    ____  _             ")}
+${chalk.magenta(" |__  /___| __ )| | ___   __ _ ")}
+${chalk.magenta("   / // _ \\  _ \\| |/ _ \\ / _` |")}
+${chalk.magenta("  / /|  __/ |_) | | (_) | (_| |")}
+${chalk.magenta(" /____\\___|____/|_|\\___/ \\__, |")}
+${chalk.magenta("                         |___/ ")}
 `;
 
 /* ==================== 配置 ==================== */
@@ -39,41 +39,85 @@ function parseConfig() {
     const raw = fs.readFileSync('config.conf', 'utf-8');
     const conf = {};
     let sec = '';
+    let previousSec = ''; // 新增：跟踪上一个section
+    let currentItem = null; // 用于 [tech] 多行项
     for (const line of raw.split('\n')) {
-      const l = line.trim();
+      let l = line.trim();
+      const indent = line.length - line.trimStart().length; // 计算缩进长度
       if (l.startsWith('[') && l.endsWith(']')) {
+        // 新section前，保存上一个[tech]的最后一个项
+        if (previousSec === 'tech' && currentItem) {
+          if (!conf[previousSec]) conf[previousSec] = [];
+          conf[previousSec].push(currentItem);
+          currentItem = null;
+        }
+        previousSec = sec;
         sec = l.slice(1, -1);
+        currentItem = null; // 新 section，重置当前项
         continue;
       }
       if (!l || !sec) continue;
       const eqIdx = l.indexOf('=');
-      if (eqIdx === -1) continue;
-      const k = l.substring(0, eqIdx).trim();
-      const v = l.substring(eqIdx + 1).trim();
-      if (k.startsWith('#') || !k) continue;
-      if (!conf[sec]) conf[sec] = {};
-      // 处理数组格式（如 [tech] - name: PHP）
-      if (v.startsWith('- ')) {
-        const itemStr = v.slice(2).trim();
+      if (eqIdx !== -1) {
+        // 标准 key = value
+        const k = l.substring(0, eqIdx).trim();
+        const v = l.substring(eqIdx + 1).trim();
+        if (k.startsWith('#') || !k) continue;
+        if (!conf[sec]) conf[sec] = {};
+        if (v.startsWith('- ')) {
+          // 原数组处理（如果有 = - ...）
+          const itemStr = v.slice(2).trim();
+          const itemMatch = itemStr.match(/(.+?):\s*(.+)/);
+          if (itemMatch) {
+            const key = itemMatch[1].trim();
+            const val = itemMatch[2].trim();
+            if (!conf[sec][k]) conf[sec][k] = [];
+            const item = {};
+            item[key] = val;
+            conf[sec][k].push(item);
+          } else {
+            if (!conf[sec][k]) conf[sec][k] = [];
+            conf[sec][k].push(itemStr);
+          }
+        } else {
+          conf[sec][k] = v;
+        }
+      } else if (sec === 'gists' && l.startsWith('- ')) {
+        // [gists] 特殊处理：收集 - 开头行
+        if (!conf[sec]) conf[sec] = [];
+        conf[sec].push(l.slice(2).trim());
+      } else if (sec === 'tech' && l.startsWith('- ')) {
+        // [tech] 新项开始
+        if (currentItem) {
+          // 保存上一个项
+          if (!conf[sec]) conf[sec] = [];
+          conf[sec].push(currentItem);
+        }
+        currentItem = {};
+        const itemStr = l.slice(2).trim();
         const itemMatch = itemStr.match(/(.+?):\s*(.+)/);
         if (itemMatch) {
-          const key = itemMatch[1].trim();
-          const val = itemMatch[2].trim();
-          if (!conf[sec][k]) conf[sec][k] = [];
-          const item = {};
-          item[key] = val;
-          conf[sec][k].push(item);
-        } else {
-          if (!conf[sec][k]) conf[sec][k] = [];
-          conf[sec][k].push(itemStr);
+          currentItem[itemMatch[1].trim()] = itemMatch[2].trim();
         }
-      } else {
-        conf[sec][k] = v;
+      } else if (sec === 'tech' && currentItem && indent > 0) {
+        // [tech] 续行：缩进行，追加到当前项
+        const lNoIndent = l.trim();
+        const colonIdx = lNoIndent.indexOf(':');
+        if (colonIdx !== -1) {
+          const key = lNoIndent.substring(0, colonIdx).trim();
+          const val = lNoIndent.substring(colonIdx + 1).trim();
+          currentItem[key] = val;
+        }
       }
     }
+    // 循环结束后，保存最后一个[tech]项
+    if (previousSec === 'tech' && currentItem) {
+      if (!conf[previousSec]) conf[previousSec] = [];
+      conf[previousSec].push(currentItem);
+    }
     // 验证核心配置
-    if (!conf.build || !conf.build.posts_dir || !conf.build.templates_dir || !conf.build.output_dir) {
-      throw new Error('build 部分缺少必要配置 (posts_dir, templates_dir, output_dir)');
+    if (!conf.build || !conf.build.posts_dir || !conf.build.theme || !conf.build.output_dir) {
+      throw new Error('build 部分缺少必要配置 (posts_dir, theme, output_dir)');
     }
     if (!conf.site || !conf.site.base_url) {
       throw new Error('site.base_url 配置缺失');
@@ -87,6 +131,12 @@ function parseConfig() {
 const CFG = parseConfig();
 const SITE = CFG.site;
 const BUILD = CFG.build;
+
+// 动态设置主题目录：使用配置的 templates_dir 作为基础路径 + theme
+const THEME = BUILD.theme || 'default';
+const BASE_TEMPLATES_DIR = BUILD.templates_dir.replace(/\/$/, ''); // 移除尾随 / 
+BUILD.templates_dir = path.join(BASE_TEMPLATES_DIR, THEME); // e.g., templates/default/
+const THEME_ASSETS_DIR = path.join(BUILD.templates_dir, 'assets'); // 主题静态资源: templates/default/assets/
 const ROUTE = CFG.routing || {};
 const FEATURES = CFG.features || {};
 const SOCIAL = CFG.social || {};
@@ -179,9 +229,9 @@ const logger = {
 
 /* ==================== 工具 ==================== */
 function fmtSize(b) {
-  if (b > 1024 * 1024) return (b / (1024 * 1024)).toFixed(1) + ' MiB';
-  if (b > 1024) return (b / 1024).toFixed(1) + ' KiB';
-  return b + ' B';
+  if (b > 1024 * 1024) return (b / (1024 * 1024)).toFixed(1) + 'MiB';
+  if (b > 1024) return (b / 1024).toFixed(1) + 'KiB';
+  return b + 'B';
 }
 function ensureArray(v) {
   if (!v) return [];
@@ -237,7 +287,7 @@ async function render(tpl, data, outFile) {
   try {
     const tplPath = path.join(BUILD.templates_dir, `${tpl}.ejs`);
     if (!await fs.pathExists(tplPath)) {
-      throw new Error(`模板文件不存在: ${tpl}.ejs`);
+      throw new Error(`模板文件不存在: ${tpl}.ejs (主题: ${THEME}, 路径: ${tplPath})`);
     }
     // 统一注入配置到 data
     const fullData = {
@@ -294,6 +344,7 @@ async function buildReport(outputDir, posts) {
     logger.info(`总文件数: %c${files.length}`, 'yellow');
     logger.info(`总大小: %c${fmtSize(totalSize)}`, 'green');
     logger.info(`文章数: %c${posts.length}`, 'magenta');
+    logger.info(`当前主题: %c${THEME}`, 'cyan');
     logger.info('%c文件列表:', 'bold blue');
     report.forEach(({ file, size }) => {
       logger.info(`  %c${file.padEnd(30)} %c${size}`, 'dim', 'gray');
@@ -308,7 +359,7 @@ async function buildReport(outputDir, posts) {
 async function listBuildFiles(outputDir) {
   try {
     const files = await glob('**/*', { cwd: outputDir, nodir: true });
-    logger.dev('%c=== Dev 构建文件列表 ===', 'bold green');
+    logger.dev(`%c=== Dev 构建文件列表 (主题: ${THEME}) ===`, 'bold green');
     files.forEach(f => logger.dev(`  %c${f}`, 'cyan'));
     logger.dev('%c======================', 'bold green');
   } catch (err) {
@@ -319,7 +370,7 @@ async function listBuildFiles(outputDir) {
 /* ==================== 全量构建 ==================== */
 async function build() {
   const start = performance.now();
-  logger.info('开始全量构建…');
+  logger.info(`开始全量构建 (主题: ${THEME}, 模板基路径: ${BASE_TEMPLATES_DIR})…`);
 
   try {
     // 验证目录
@@ -327,7 +378,7 @@ async function build() {
       throw new Error(`posts_dir 不存在: ${BUILD.posts_dir}`);
     }
     if (!fs.existsSync(BUILD.templates_dir)) {
-      throw new Error(`templates_dir 不存在: ${BUILD.templates_dir}`);
+      throw new Error(`主题目录不存在: ${BUILD.templates_dir} (请检查 [build] templates_dir 和 theme 配置)`);
     }
 
     // 1. 收集文章
@@ -388,15 +439,30 @@ async function build() {
     // 5. 生成 sitemap.xml
     await generateSitemap(posts, BUILD.output_dir, hasGists);
 
-    // 6. 拷贝静态资源
-    if (await fs.pathExists(BUILD.assets_dir)) {
-      await fs.copy(BUILD.assets_dir, path.join(BUILD.output_dir, 'assets'));
+    // 6. 拷贝 content/public 整个文件夹到 output/public/
+    const contentPublicDir = path.join('content', 'public');
+    if (await fs.pathExists(contentPublicDir)) {
+      await fs.copy(contentPublicDir, path.join(BUILD.output_dir, 'public'));
+      logger.debug('拷贝 content/public/ 到 output/public/');
+    }
+
+    // 7. 拷贝 data 到 output 根目录
+    const dataDir = 'data';
+    if (await fs.pathExists(dataDir)) {
+      await fs.copy(dataDir, BUILD.output_dir);
+      logger.debug('拷贝 data 到输出根目录');
+    }
+
+    // 8. 拷贝主题静态资源 {BASE_TEMPLATES_DIR}/${theme}/assets/ 整个文件夹到 output/assets/
+    if (await fs.pathExists(THEME_ASSETS_DIR)) {
+      await fs.copy(THEME_ASSETS_DIR, path.join(BUILD.output_dir, 'assets'));
+      logger.debug(`拷贝主题静态资源 ${THEME_ASSETS_DIR} 到 output/assets/`);
     }
 
     const cost = (performance.now() - start).toFixed(0);
-    logger.info(`构建完成 (${cost} ms) 共 ${posts.length} 篇`);
+    logger.info(`构建完成 (${cost} ms) 共 ${posts.length} 篇 (主题: ${THEME})`);
 
-    // 7. 构建报告 (仅 build 模式)
+    // 9. 构建报告 (仅 build 模式)
     if (logLevel === 'info') {
       await buildReport(BUILD.output_dir, posts);
     }
@@ -427,7 +493,7 @@ function serve(port) {
       logger.error(`服务器错误: ${err.message}`);
     }
   });
-  srv.listen(port, () => logger.info(`本地服务器运行中 → http://localhost:${port}`));
+  srv.listen(port, () => logger.info(`本地服务器运行中 → http://localhost:${port} (主题: ${THEME})`));
 }
 
 /* ==================== 监听模式 (Dev) ==================== */
@@ -439,7 +505,8 @@ function watch(port) {
     logger.error(`Dev 模式启动失败: ${err.message}`);
     process.exit(1);
   });
-  chokidar.watch(['config.conf', BUILD.templates_dir, BUILD.posts_dir], { ignored: /node_modules|\.git/ })
+  // 监听当前主题目录、config、posts
+  chokidar.watch(['config.conf', BUILD.templates_dir, BUILD.posts_dir, THEME_ASSETS_DIR], { ignored: /node_modules|\.git/ })
     .on('change', p => {
       logger.update(p);
       build();

@@ -1,5 +1,5 @@
 {
-  "name": "static-site-generator",
+  "name": "ZeBlog",
   "version": "1.0.0",
   "description": "EJS + Markdown 静态站生成器",
   "type": "module",
