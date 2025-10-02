@@ -248,12 +248,22 @@ function genId(content) {
   return null;
 }
 
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /* ==================== Markdown ==================== */
 marked.use({
   renderer: {
     code(code, lang) {
       const language = lang || 'none';
-      return `<pre class="language-${language}"><code class="language-${language}">${code}</code></pre>`;
+      const safe = escapeHtml(code);          // ← 关键转义
+      return `<pre class="language-${language}"><code class="language-${language}">${safe}</code></pre>`;
     }
   }
 });
