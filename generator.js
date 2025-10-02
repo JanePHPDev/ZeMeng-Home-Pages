@@ -541,15 +541,15 @@ if (pIdx !== -1 && argv[pIdx + 1]) {
 let mode = 'build';
 if (argv.includes('--debug')) {
   setLogLevel('debug');
-  mode = 'DeBug';
+  mode = '[ZeBlog DeBug Model] Start';
   console.log(chalk.yellow(mode));
 } else if (argv.includes('--watch')) {
   setLogLevel('dev');
-  mode = 'Dev';
+  mode = '[ZeBlog Dev Model] Start';
   console.log(chalk.blue(mode));
 } else {
   setLogLevel('info');
-  mode = 'build';
+  mode = '[ZeBlog Build Model] Start';
   console.log(chalk.green(mode));
 }
 
