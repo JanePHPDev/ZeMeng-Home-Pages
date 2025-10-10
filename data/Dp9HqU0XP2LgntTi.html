@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <script>
+        function generateRandomId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let id = '';
+            for (let i = 0; i < 16; i++) {
+                id += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return id;
+        }
+        window.onload = function () {
+            const randomId = generateRandomId();
+            const idElement = document.createElement('p');
+            idElement.textContent = 'ID: ' + randomId;
+            document.body.appendChild(idElement);
+        };
+    </script>
+</head>
+
+<body>
+    <p>不是哥们 你还真点啊</p>
+    <p>现在，连带着ID截图发群里</p>
+</body>
+
+</html>
